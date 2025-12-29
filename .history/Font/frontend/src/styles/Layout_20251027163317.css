@@ -1,0 +1,17 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  margin-top: 70px; /* pour laisser la navbar fixe visible */
+}
+
+.footer {
+  background: #111;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+}

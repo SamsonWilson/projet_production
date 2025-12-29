@@ -1,0 +1,269 @@
+.hero-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  letter-spacing: 2px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+}
+
+.hero-content button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff5252;
+  color: white;
+  cursor: pointer;
+}
+
+.intro-section {
+  padding: 80px 20px;
+  text-align: center;
+  color: white;
+  background: #0e0d0d;
+}
+/* styles/Home.css */
+
+/* Variables CSS pour les couleurs si vous le souhaitez */
+:root {
+  --primary-color: #f8f9fa; /* Blanc ou gris très clair pour le texte */
+  --secondary-color: #ced4da; /* Gris plus clair */
+  --dark-bg-color: #212529; /* Couleur de fond sombre pour les sections */
+  --card-bg-color: #343a40; /* Couleur de fond des cartes, légèrement plus claire que le BG */
+  --button-color: #6c757d; /* Couleur du bouton (gris) */
+  --button-hover-color: #495057; /* Couleur du bouton au survol */
+  --section-title-color: #f8f9fa; /* Couleur des titres de section */
+  --card-title-color: #f8f9fa; /* Couleur des titres de carte */
+  --card-text-color: #ced4da; /* Couleur du texte des cartes */
+}
+
+
+/* Styles généraux pour le corps de la page (si Layout n'a pas déjà un fond) */
+body {
+  background-color: var(--dark-bg-color); /* Fond sombre pour toute la page */
+  color: var(--primary-color); /* Couleur de texte par défaut */
+  font-family: 'Montserrat', sans-serif; /* Exemple de police moderne */
+}
+
+/* --- Section Héro --- */
+.hero-section {
+  position: relative;
+  height: 80vh; /* Hauteur de la section héros */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color);
+  text-align: center;
+  overflow: hidden; /* Assure que la vidéo ne déborde pas */
+}
+
+.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Couvre toute la section */
+  transform: translate(-50%, -50%);
+  z-index: 1; /* Place la vidéo derrière le contenu */
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay sombre pour améliorer la lisibilité du texte */
+  z-index: 2; /* Place l'overlay entre la vidéo et le contenu */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3; /* Place le contenu au-dessus de l'overlay */
+  padding: 20px;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem; /* Grande taille de police pour le titre */
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--secondary-color);
+}
+
+.btn-custom-portfolio {
+  background-color: transparent; /* Fond transparent */
+  color: var(--primary-color); /* Texte blanc */
+  border: 2px solid var(--primary-color); /* Bordure blanche */
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  border-radius: 5px; /* Coins légèrement arrondis */
+}
+
+.btn-custom-portfolio:hover {
+  background-color: var(--primary-color); /* Fond blanc au survol */
+  color: var(--dark-bg-color); /* Texte sombre au survol */
+  text-decoration: none; /* Supprime le soulignement au survol */
+}
+
+/* --- Sections Générales --- */
+.section-title {
+  color: var(--section-title-color);
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 3rem !important; /* Force la marge */
+}
+
+/* --- Section Portfolio (intro-section) --- */
+.intro-section {
+  background-color: var(--dark-bg-color); /* Assurez-vous que le fond est sombre */
+  padding: 4rem 0; /* Padding vertical */
+}
+
+.horizontal-scroll-wrapper {
+    overflow-x: auto; /* Active le défilement horizontal si le contenu dépasse */
+    -webkit-overflow-scrolling: touch; /* Pour un défilement fluide sur iOS */
+    padding-bottom: 1rem; /* Donne un peu d'espace pour la scrollbar si elle est visible */
+}
+
+/* Masquer la scrollbar */
+.horizontal-scroll-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+.horizontal-scroll-wrapper {
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.project-card {
+  background-color: var(--card-bg-color); /* Fond de carte sombre */
+  border: none; /* Pas de bordure par défaut */
+  border-radius: 10px; /* Coins arrondis pour les cartes */
+  padding: 1.5rem; /* Padding interne */
+  color: var(--card-text-color);
+  transition: transform 0.2s ease-in-out;
+}
+
+.project-card:hover {
+  transform: translateY(-5px); /* Effet de léger soulèvement au survol */
+}
+
+.card-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px; /* Taille du cercle d'icône */
+  height: 80px;
+  border-radius: 50%; /* Pour un cercle */
+  background-color: #6c757d; /* Couleur de fond du cercle, comme dans l'image */
+  margin: 0 auto 1.5rem auto; /* Centrer le cercle et espacement */
+  padding: 15px; /* Espace autour de l'icône à l'intérieur du cercle */
+}
+
+.card-icon {
+  width: 100%; /* L'icône prend 100% de la largeur du wrapper */
+  height: 100%;
+  object-fit: contain; /* L'icône reste contenue */
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%); /* Rend l'icône blanche */
+}
+
+
+.project-card .card-title {
+  color: var(--card-title-color);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.project-card .card-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+
+/* --- Section Vidéo YouTube --- */
+.video-section {
+  background-color: var(--dark-bg-color); /* Assurez-vous que le fond est sombre */
+  padding: 4rem 0; /* Padding vertical */
+}
+
+.video-container {
+  max-width: 900px; /* Limiter la largeur de la vidéo */
+  margin: 0 auto; /* Centrer le conteneur vidéo */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Ombre pour la vidéo */
+  border-radius: 8px; /* Bords légèrement arrondis pour l'iframe */
+  overflow: hidden; /* Cache les débordements de l'iframe */
+}
+
+/* Règle pour les iframes imbriquées dans .video-container */
+.video-container iframe {
+    border-radius: 8px; /* Applique les bords arrondis directement à l'iframe */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  .hero-content p {
+    font-size: 1.2rem;
+  }
+  .btn-custom-portfolio {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+  }
+  .section-title {
+    font-size: 2rem;
+  }
+  .project-card .card-title {
+    font-size: 1.1rem;
+  }
+  .project-card .card-text {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+    .project-card {
+        padding: 1rem;
+    }
+    .card-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+    }
+}

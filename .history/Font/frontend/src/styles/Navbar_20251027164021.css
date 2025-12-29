@@ -1,0 +1,45 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  /* ✅ Compatibilité tous navigateurs */
+  -webkit-backdrop-filter: blur(10px); /* Safari, iPhone/iPad */
+  backdrop-filter: blur(10px);         /* Chrome, Edge, Firefox */
+
+  padding: 15px 0;
+  z-index: 10;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+}
+
+.nav-logo {
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 1.3rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ff5252;
+}

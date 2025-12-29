@@ -1,0 +1,407 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STORYTAILORS STYLE - Production Vidéo & Storytelling</title>
+    <!-- Bootstrap CSS CDN (VERSION 5.3.3 gardée seule) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Polices Google pour un look plus moderne -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons (version 1.11.3) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Votre CSS personnalisé (doit être le dernier pour que ses styles prennent le dessus) -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"/>
+
+</head>
+<style>
+    .fixer-text-container {
+        max-width: 850px;           /* Empêche les lignes trop longues (fatiguant pour l'œil) */
+        margin: 0 auto;             /* Centre le bloc sur la page */
+        font-family: 'Helvetica Neue', Arial, sans-serif; /* Police moderne et propre */
+        line-height: 1.8;           /* Donne de l'air entre les lignes */
+        color: #e0e0e0;             /* Gris très clair (moins agressif que le blanc pur sur fond noir) */
+        text-align: left;           /* L'alignement à gauche est le plus lisible pour le cerveau */
+        font-size: 1.1rem;          /* Taille de lecture confortable */
+    }
+
+    .brand-name {
+        color: #FF8C00;             /* L'orange de votre logo pour créer un rappel visuel */
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .highlight-box {
+        border-left: 3px solid #FF8C00; /* Une petite barre de rappel couleur sur le côté */
+        padding-left: 20px;
+        margin-top: 30px;
+    }
+</style>
+<body>
+
+    
+    <!-- Navigation Bar -->
+   <nav class="navbar navbar-expand-lg sticky-top custom-navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#home">
+            {% comment %} <img src="{% static 'css/image/LOGO_KINERA_FILM FIXERS.png' %}" alt="KINÉRA FILM FIXERS" height="80"  width="100px";> {% endcomment %}
+            <span class="fw-bold">KINÉRA FILM FIXERS</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-label="Basculer la navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#home">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#realisations">Réalisations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <!-- Section Héro -->
+
+
+<!-- Section Héro -->
+<section class="hero-section" id="home">
+
+  <video autoplay muted loop class="background-video">
+      <source src="{% static 'css/videos/fonderr.mp4' %}" type="video/mp4">
+      Votre navigateur ne supporte pas la lecture vidéo.
+  </video>
+
+  <div class="hero-overlay"></div>  
+
+  <div class="hero-content">  
+    <h1>
+        <img src="{% static 'css/image/LOGO_KINERA_FILM FIXERS.png' %}" alt="KINÉRA FILM FIXERS" height="700" ;>
+                {% comment %} <img src="{% static 'css/image/FILM.png' %}" alt="KINÉRA FILM FIXERS" height="700" ;> {% endcomment %}
+
+    </h1>  
+      <button class="btn-custom-portfolio">Voir le portfolio</button>  
+  </div>  
+
+</section>
+
+
+    <!-- =============================================== -->
+    <!--            NOUVELLE SECTION DE TEXTE            -->
+    <!-- =============================================== -->
+   <section class="about-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                
+                <h1 class="mb-4 section-title">Qui sommes-nous ?</h1>
+                
+                <!-- Image de Profil Ronde -->
+                <div class="mb-4">
+                    <img src="{% static 'css/image/capture.png' %}" 
+                         alt="Profil Kinéra Film Fixers" 
+                         class="rounded-circle shadow-lg" 
+                         style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #FF8C00;">
+                </div>
+
+                <p class="lead section-text" style="text-align: justify; line-height: 1.8;">
+                    Basée à <strong>Cotonou, au Bénin</strong>, KINÉRA FILM FIXERS est un réseau de professionnels chevronnés offrant un soutien à la production de haut niveau à travers l'Afrique. Nous aidons les cinéastes, les producteurs de télévision et les documentaristes à concrétiser leurs visions créatives avec fluidité et efficacité.
+                </p>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- =============================================== -->
+    <!--            FIN DE LA NOUVELLE SECTION           -->
+    <!-- =============================================== -->
+
+    <!-- Section Portfolio (Nos Réalisations) -->
+    <section class="portfolio-section" id="realisations">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Nos Réalisations</h2>
+            <div class="fixer-text-container">
+                <p>
+                    Chez <span class="brand-name">Kinéra Film Fixers</span>, nous facilitons la rencontre entre les productions cinématographiques internationales et les histoires africaines authentiques.
+                </p>
+                <p>
+                    Basés à <strong>Cotonou, au Bénin</strong>, notre mission est d'offrir un soutien logistique sans faille sur tout le continent grâce à un réseau de professionnels expérimentés présents dans les pays clés d'Afrique.
+                </p>
+                <div class="highlight-box">
+                    <p>
+                        Qu'il s'agisse d'environnements urbains, ruraux ou de zones isolées, nos coordinateurs maîtrisent la complexité du terrain. Nous transformons chaque défi logistique en une opportunité de réussite pour votre projet.
+                    </p>
+                </div>
+                <p style="margin-top: 20px; font-style: italic; color: #bbb;">
+                    Un partenaire de confiance pour préserver l'authenticité et la richesse des récits africains.
+                </p>
+</div>
+            <div class="portfolio-grid">
+                <!-- Projet 1 -->
+                <div class="project-card">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper">
+                            <img src="{% static 'css/image/FILM.png' %}" alt="Film Institutionnel" class="card-icon">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">Film Institutionnel "Vision"</h3>
+                            <p class="card-text">Création d'un film corporate percutant pour la présentation des valeurs et de la mission de l'entreprise.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projet 2 -->
+                <div class="project-card">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper">
+                            <img src="/icons/ad-icon.svg" alt="Publicité Digitale" class="card-icon">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">Publicité Digitale "Éclat"</h3>
+                            <p class="card-text">Conception et production d'une série de courtes publicités vidéo optimisées pour les réseaux sociaux.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projet 3 -->
+                <div class="project-card">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper">
+                            <img src="/icons/tutorial-icon.svg" alt="Tutoriel Animé" class="card-icon">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">Tutoriel Animé "Guide"</h3>
+                            <p class="card-text">Réalisation d'un tutoriel vidéo animé expliquant un concept complexe de manière simple et engageante.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projet 4 -->
+                <div class="project-card">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper">
+                            <img src="/icons/music-clip-icon.svg" alt="Clip Musical" class="card-icon">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">Clip Musical "Harmonie"</h3>
+                            <p class="card-text">Production d'un clip vidéo créatif et esthétique pour un artiste émergent.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projet 5 -->
+                <div class="project-card">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper">
+                            <img src="/icons/doc-icon.svg" alt="Documentaire" class="card-icon">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">Documentaire "Voyage"</h3>
+                            <p class="card-text">Création d'un documentaire captivant sur des destinations uniques.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projet 6 -->
+                <div class="project-card">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper">
+                            <img src="/icons/event-icon.svg" alt="Vidéo Événementielle" class="card-icon">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <h3 class="card-title">Vidéo Événementielle "Célébration"</h3>
+                            <p class="card-text">Captation et montage vidéo d'événements spéciaux.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% comment %} {% load static %} {% endcomment %}
+
+<section class="video-section py-5">
+  <div class="container text-center">
+    <h2 class="section-title mb-4">🎬 Nos vidéos</h2>
+
+    <!-- ===== Vidéo principale ===== -->
+     <div class="video-thumbnail" id="main-thumbnail" data-video-id="ScMzIvxBSi4">
+      <img src="https://img.youtube.com/vi/ScMzIvxBSi4/maxresdefault.jpg" alt="Miniature" class="img-fluid rounded">
+      <div class="play-button"></div>
+  </div>
+
+  <iframe
+      id="main-video"
+      width="100%"
+      height="450"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="display:none;">
+  </iframe>
+
+    <!-- ===== Sous-vidéos miniatures ===== -->
+    <div class="sub-videos row g-3">
+
+      <!-- 1 -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="sub-video" data-video-id="y6120QOlsfU">
+            <img src="https://img.youtube.com/vi/y6120QOlsfU/hqdefault.jpg" class="img-fluid rounded">
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="sub-video" data-video-id="tgbNymZ7vqY">
+            <img src="https://img.youtube.com/vi/tgbNymZ7vqY/hqdefault.jpg" class="img-fluid rounded">
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="sub-video" data-video-id="fLexgOxsZu0">
+            <img src="https://img.youtube.com/vi/fLexgOxsZu0/hqdefault.jpg" class="img-fluid rounded">
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="sub-video" data-video-id="C0DPdy98e4c">
+            <img src="https://img.youtube.com/vi/C0DPdy98e4c/hqdefault.jpg" class="img-fluid rounded">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    
+    <!-- =============================================== -->
+    <!--                SECTION CONTACT                  -->
+    <!-- =============================================== -->
+    <section class="contact-section py-5" id="contact" >
+        <div class="container">
+            <!-- Titre de la section -->
+            <h2 class="section-title text-center mb-5">Contactez-nous</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Formulaire de contact -->
+                    <form>
+                        <!-- Champ Nom -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nom Complet</label>
+                            <input type="text" class="form-control" id="name" placeholder="Votre nom" required>
+                        </div>
+
+                        <!-- Champ Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="votre.email@exemple.com" required>
+                        </div>
+
+                        <!-- Champ Sujet -->
+                        <div class="mb-3">
+                             <label for="subject" class="form-label">Sujet</label>
+                             <input type="text" class="form-control" id="subject" placeholder="Sujet de votre message">
+                        </div>
+
+                        <!-- Champ Message -->
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Votre Message</label>
+                            <textarea class="form-control" id="message" rows="6" placeholder="Écrivez votre message ici..." required></textarea>
+                        </div>
+
+                        <!-- Bouton d'envoi -->
+                        <div class="text-center">
+                             <button type="submit" class="btn-custom-portfolio">Envoyer le Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================== -->
+    <!--             FOOTER (Pied de page)               -->
+    <!-- =============================================== -->
+    <footer class="text-center py-4 bg-dark text-white">
+        <div class="container">
+            <p class="mb-0">© 2024 STORYTAILORS STYLE. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- =============================================== -->
+    <!--            BOUTON FLOTTANT WHATSAPP             -->
+    <!-- =============================================== -->
+   <a href="https://wa.me/+22890140998"
+   target="_blank"
+   title="Contactez-nous sur WhatsApp"
+   style="
+      position: fixed;
+      top: 50%;
+      left: 5%;
+      transform: translate(-50%, -50%);
+      background-color: #25d366;
+      color: #FFF;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 18px;
+      padding: 15px 25px;
+      box-shadow: 2px 2px 3px #999;
+      z-index: 1000;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;">
+    <i class="bi bi-whatsapp" style="font-size: 28px;"></i>
+    <span>+228 90 14 09 98</span>
+</a>
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+document.querySelectorAll(".sub-video").forEach(item => {
+    item.addEventListener("click", function () {
+
+        const videoId = this.getAttribute("data-video-id");
+        const mainVideo = document.getElementById("main-video");
+
+        mainVideo.src =
+            "https://www.youtube.com/embed/" +
+            videoId +
+            "?rel=0&autoplay=1&modestbranding=1";
+
+    });
+});
+</script>
+
+</body>
+</html>

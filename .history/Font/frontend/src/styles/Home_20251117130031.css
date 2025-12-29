@@ -1,0 +1,244 @@
+/* --------------------------------------------- */
+/*                VARIABLES GLOBALES             */
+/* --------------------------------------------- */
+:root {
+  --primary-color: #f8f9fa;
+  --secondary-color: #ced4da;
+  --dark-bg-color: #212529;
+  --card-bg-color: #2c3135;
+  --button-border-color: #f8f9fa;
+  --button-hover-bg-color: #f8f9fa;
+  --button-hover-text-color: #212529;
+  --section-title-color: #f8f9fa;
+  --card-title-color: #f8f9fa;
+  --card-text-color: #ced4da;
+  --card-icon-circle-bg: #6c757d;
+}
+
+/* --------------------------------------------- */
+/*                STYLE GLOBAL PAGE              */
+/* --------------------------------------------- */
+body {
+  background-color: var(--dark-bg-color);
+  color: var(--primary-color);
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------- */
+/*                    NAVBAR                     */
+/* --------------------------------------------- */
+.navbar {
+  background-color: #2b2b2b !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar-brand,
+.nav-link {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+}
+
+.nav-link.active {
+  color: #007bff !important;
+}
+
+/* --------------------------------------------- */
+/*                SECTION HERO                   */
+/* --------------------------------------------- */
+.hero-section {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  padding: 20px;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--secondary-color);
+}
+
+/* BTN Hero */
+.btn-custom-portfolio {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--button-border-color);
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all .3s ease;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-custom-portfolio:hover {
+  background-color: var(--button-hover-bg-color);
+  color: var(--button-hover-text-color);
+}
+
+/* --------------------------------------------- */
+/*           TITRES SECTIONS                     */
+/* --------------------------------------------- */
+.section-title {
+  color: var(--section-title-color);
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 3rem !important;
+}
+
+/* --------------------------------------------- */
+/*       SECTION PORTFOLIO (RÉALISATIONS)        */
+/* --------------------------------------------- */
+.portfolio-section {
+  background-color: var(--dark-bg-color);
+  padding: 4rem 0;
+}
+
+/* Wrapper scroll horizontal */
+.horizontal-scroll-wrapper {
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+/* Hide scrollbar (universal) */
+.horizontal-scroll-wrapper::-webkit-scrollbar {
+  height: 0;
+}
+.horizontal-scroll-wrapper {
+  scrollbar-width: none; /* Firefox */
+}
+.horizontal-scroll-wrapper {
+  -ms-overflow-style: none; /* IE & Edge */
+}
+
+/* Cards */
+.project-card {
+  background-color: var(--card-bg-color);
+  border: none;
+  border-radius: 10px;
+  padding: 1.5rem;
+  color: var(--card-text-color);
+  transition: .2s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.card-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--card-icon-circle-bg);
+  margin: 0 auto 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: invert(100%);
+}
+
+.project-card .card-title {
+  color: var(--card-title-color);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.project-card .card-text {
+  font-size: .95rem;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------- */
+/*             SECTION VIDEO YOUTUBE             */
+/* --------------------------------------------- */
+.video-section {
+  background-color: var(--dark-bg-color);
+  padding: 4rem 0;
+}
+
+.video-container {
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  border-radius: 8px;
+}
+
+/* --------------------------------------------- */
+/*                 RESPONSIVE                    */
+/* --------------------------------------------- */
+@media (max-width: 992px) {
+  .hero-content h1 { font-size: 3rem; }
+  .hero-content p { font-size: 1.3rem; }
+  .section-title { font-size: 2.2rem; }
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 { font-size: 2.5rem; }
+  .hero-content p { font-size: 1.2rem; }
+  .btn-custom-portfolio { padding: .6rem 1.5rem; }
+  .section-title { font-size: 2rem; }
+  .video-container iframe { height: 350px; }
+}
+
+@media (max-width: 576px) {
+  .hero-section { height: 60vh; }
+  .hero-content h1 { font-size: 2rem; }
+  .hero-content p { font-size: 1rem; }
+  .project-card { padding: 1rem; }
+  .card-icon-wrapper { width: 60px; height: 60px; }
+  .section-title { font-size: 1.8rem; }
+  .video-container iframe { height: 250px; }
+}
