@@ -1,0 +1,932 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block title %}Messages | KINÉRA FILM FIXERS{% endblock %}
+
+{% block content %}
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<div class="content-wrapper">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1><i class="bi bi-envelope-heart"></i> Messages de Contact</h1>
+      <p class="subtitle">Gérez tous les messages reçus de vos clients</p>
+    </div>
+    <div class="header-stats">
+      <div class="header-stat">
+        <span class="stat-number">{{ count_nouveau }}</span>
+        <span class="stat-label">Nouveaux</span>
+      </div>
+      <div class="header-stat">
+        <span class="stat-number">{{ count_lu }}</span>
+        <span class="stat-label">Lus</span>
+      </div>
+      <div class="header-stat">
+        <span class="stat-number">{{ count_total }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TABS ===== -->
+  <div class="message-tabs">
+    <button class="tab-btn active" data-filter="all">
+      <i class="bi bi-inbox"></i>
+      <span>Tous les Messages</span>
+      <span class="badge-count">{{ count_total }}</span>
+    </button>
+    <button class="tab-btn" data-filter="nouveau">
+      <i class="bi bi-star"></i>
+      <span>Nouveaux</span>
+      <span class="badge-count">{{ count_nouveau }}</span>
+    </button>
+    <button class="tab-btn" data-filter="lu">
+      <i class="bi bi-check-circle"></i>
+      <span>Lus</span>
+      <span class="badge-count">{{ count_lu }}</span>
+    </button>
+    {% if count_archive > 0 %}
+    <button class="tab-btn" data-filter="archive">
+      <i class="bi bi-archive"></i>
+      <span>Archivés</span>
+      <span class="badge-count">{{ count_archive }}</span>
+    </button>
+    {% endif %}
+  </div>
+
+  <!-- ===== FILTER & SEARCH ===== -->
+  <div class="filter-section">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" id="searchInput" placeholder="Chercher un message...">
+    </div>
+    <div class="filter-controls">
+      <select id="categoryFilter" class="filter-select">
+        <option value="">Toutes les catégories</option>
+        <option value="general">Général</option>
+        <option value="devis">Devis</option>
+        <option value="reclamation">Réclamation</option>
+        <option value="partenariat">Partenariat</option>
+      </select>
+      <div class="action-buttons">
+        <button class="btn-action" id="refreshBtn" title="Rafraîchir">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+        <button class="btn-action delete-all" id="deleteAllBtn" title="Supprimer sélectionnés">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NOUVEAUX MESSAGES ===== -->
+  <div class="messages-section" data-section="nouveau">
+    <div class="section-header" onclick="toggleSectionByHeader(this)">
+      <div class="section-title-group">
+        <i class="bi bi-star-fill"></i>
+        <h2>Nouveaux Messages</h2>
+        <span class="section-count">{{ count_nouveau }}</span>
+      </div>
+      <button class="section-toggle" type="button">
+        <i class="bi bi-chevron-down"></i>
+      </button>
+    </div>
+    <div class="messages-table-wrapper">
+      <table class="messages-table">
+        <tbody>
+          {% for msg in messages_nouveaux %}
+          <tr class="message-row" data-id="{{ msg.pk }}" data-status="nouveau" data-category="{{ msg.category }}">
+            <td class="checkbox-cell">
+              <input type="checkbox" class="message-checkbox" value="{{ msg.pk }}">
+            </td>
+            <td class="status-cell">
+              <span class="status-badge unread">
+                <i class="bi bi-circle-fill"></i> Non lu
+              </span>
+            </td>
+            <td class="sender-cell">
+              <div class="sender-info">
+                <div class="avatar {{ msg.avatar_color }}">{{ msg.initials }}</div>
+                <div class="sender-details">
+                  <span class="sender-name">{{ msg.sender_name }}</span>
+                  <span class="sender-email">{{ msg.sender_email }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="message-preview">
+              <div class="preview-header">
+                <strong>{{ msg.subject }}</strong>
+                <span class="category-badge {{ msg.category }}">{{ msg.get_category_display }}</span>
+              </div>
+              <p class="preview-text">{{ msg.message|truncatechars:90 }}</p>
+            </td>
+            <td class="date-cell">{{ msg.created_at|date:"d M" }}</td>
+            <td class="actions-cell">
+              <button class="btn-icon view-btn" title="Voir le message" data-id="{{ msg.pk }}">
+                <i class="bi bi-eye-fill"></i>
+              </button>
+              <button class="btn-icon reply-btn" title="Répondre"
+                      data-id="{{ msg.pk }}"
+                      data-email="{{ msg.sender_email }}"
+                      data-subject="{{ msg.subject }}">
+                <i class="bi bi-reply-fill"></i>
+              </button>
+              <button class="btn-icon archive-btn" title="Archiver" data-id="{{ msg.pk }}">
+                <i class="bi bi-archive"></i>
+              </button>
+              <button class="btn-icon delete-btn" title="Supprimer" data-id="{{ msg.pk }}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="empty-state">
+              <i class="bi bi-inbox"></i>
+              <span>Aucun nouveau message</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== MESSAGES LUS ===== -->
+  <div class="messages-section" data-section="lu">
+    <div class="section-header" onclick="toggleSectionByHeader(this)">
+      <div class="section-title-group">
+        <i class="bi bi-check2-circle"></i>
+        <h2>Messages Lus</h2>
+        <span class="section-count">{{ count_lu }}</span>
+      </div>
+      <button class="section-toggle" type="button">
+        <i class="bi bi-chevron-down"></i>
+      </button>
+    </div>
+    <div class="messages-table-wrapper">
+      <table class="messages-table">
+        <tbody>
+          {% for msg in messages_lus %}
+          <tr class="message-row" data-id="{{ msg.pk }}" data-status="{{ msg.status }}" data-category="{{ msg.category }}">
+            <td class="checkbox-cell">
+              <input type="checkbox" class="message-checkbox" value="{{ msg.pk }}">
+            </td>
+            <td class="status-cell">
+              {% if msg.status == 'repondu' %}
+              <span class="status-badge replied">
+                <i class="bi bi-reply"></i> Répondu
+              </span>
+              {% else %}
+              <span class="status-badge read">
+                <i class="bi bi-check-circle"></i> Lu
+              </span>
+              {% endif %}
+            </td>
+            <td class="sender-cell">
+              <div class="sender-info">
+                <div class="avatar {{ msg.avatar_color }}">{{ msg.initials }}</div>
+                <div class="sender-details">
+                  <span class="sender-name">{{ msg.sender_name }}</span>
+                  <span class="sender-email">{{ msg.sender_email }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="message-preview">
+              <div class="preview-header">
+                <strong>{{ msg.subject }}</strong>
+                <span class="category-badge {{ msg.category }}">{{ msg.get_category_display }}</span>
+              </div>
+              <p class="preview-text">{{ msg.message|truncatechars:90 }}</p>
+            </td>
+            <td class="date-cell">{{ msg.created_at|date:"d M" }}</td>
+            <td class="actions-cell">
+              <button class="btn-icon view-btn" title="Voir le message" data-id="{{ msg.pk }}">
+                <i class="bi bi-eye-fill"></i>
+              </button>
+              <button class="btn-icon reply-btn" title="Répondre"
+                      data-id="{{ msg.pk }}"
+                      data-email="{{ msg.sender_email }}"
+                      data-subject="{{ msg.subject }}">
+                <i class="bi bi-reply-fill"></i>
+              </button>
+              <button class="btn-icon archive-btn" title="Archiver" data-id="{{ msg.pk }}">
+                <i class="bi bi-archive"></i>
+              </button>
+              <button class="btn-icon delete-btn" title="Supprimer" data-id="{{ msg.pk }}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="empty-state">
+              <i class="bi bi-check-circle"></i>
+              <span>Aucun message lu</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== MESSAGES ARCHIVÉS (affiché seulement s'il y en a) ===== -->
+  {% if messages_archives %}
+  <div class="messages-section" data-section="archive">
+    <div class="section-header" onclick="toggleSectionByHeader(this)">
+      <div class="section-title-group">
+        <i class="bi bi-archive-fill"></i>
+        <h2>Messages Archivés</h2>
+        <span class="section-count">{{ count_archive }}</span>
+      </div>
+      <button class="section-toggle" type="button">
+        <i class="bi bi-chevron-down"></i>
+      </button>
+    </div>
+    <div class="messages-table-wrapper">
+      <table class="messages-table">
+        <tbody>
+          {% for msg in messages_archives %}
+          <tr class="message-row" data-id="{{ msg.pk }}" data-status="archive" data-category="{{ msg.category }}">
+            <td class="checkbox-cell">
+              <input type="checkbox" class="message-checkbox" value="{{ msg.pk }}">
+            </td>
+            <td class="status-cell">
+              <span class="status-badge archived">
+                <i class="bi bi-archive"></i> Archivé
+              </span>
+            </td>
+            <td class="sender-cell">
+              <div class="sender-info">
+                <div class="avatar {{ msg.avatar_color }}">{{ msg.initials }}</div>
+                <div class="sender-details">
+                  <span class="sender-name">{{ msg.sender_name }}</span>
+                  <span class="sender-email">{{ msg.sender_email }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="message-preview">
+              <div class="preview-header">
+                <strong>{{ msg.subject }}</strong>
+                <span class="category-badge {{ msg.category }}">{{ msg.get_category_display }}</span>
+              </div>
+              <p class="preview-text">{{ msg.message|truncatechars:90 }}</p>
+            </td>
+            <td class="date-cell">{{ msg.created_at|date:"d M" }}</td>
+            <td class="actions-cell">
+              <button class="btn-icon view-btn" title="Voir le message" data-id="{{ msg.pk }}">
+                <i class="bi bi-eye-fill"></i>
+              </button>
+              <button class="btn-icon delete-btn" title="Supprimer" data-id="{{ msg.pk }}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+</div><!-- /.content-wrapper -->
+
+<!-- ===== TOAST NOTIFICATION ===== -->
+<div id="notification" class="notification">
+  <i class="bi bi-check-circle notification-icon"></i>
+  <span id="notificationText"></span>
+</div>
+
+<!-- ===== MESSAGE DETAIL MODAL ===== -->
+<div class="modal" id="messageModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2><i class="bi bi-envelope-open"></i> Détails du Message</h2>
+      <button class="modal-close" id="closeModal" type="button">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="message-detail">
+        <div class="detail-row">
+          <label>De :</label>
+          <span id="modalFrom"></span>
+        </div>
+        <div class="detail-row">
+          <label>Téléphone :</label>
+          <span id="modalPhone"></span>
+        </div>
+        <div class="detail-row">
+          <label>Catégorie :</label>
+          <span id="modalCategory" class="category-badge"></span>
+        </div>
+        <div class="detail-row">
+          <label>Date :</label>
+          <span id="modalDate"></span>
+        </div>
+        <div class="detail-row">
+          <label>Sujet :</label>
+          <span id="modalSubject" style="font-weight:600;"></span>
+        </div>
+        <div class="detail-message">
+          <label>Message :</label>
+          <div id="modalMessage" class="message-content"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal cancel" id="cancelBtn" type="button">Fermer</button>
+      <button class="btn-modal reply" id="replyBtn" type="button">
+        <i class="bi bi-reply-fill"></i> Répondre
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REPLY MODAL ===== -->
+<div class="modal" id="replyModal">
+  <div class="modal-content reply-modal">
+    <div class="modal-header">
+      <h2><i class="bi bi-reply-fill"></i> Répondre au Message</h2>
+      <button class="modal-close" id="closeReplyModal" type="button">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="reply-form">
+        <div class="form-group">
+          <label>À :</label>
+          <input type="email" id="replyTo" placeholder="Email du destinataire" readonly>
+        </div>
+        <div class="form-group">
+          <label>Sujet :</label>
+          <input type="text" id="replySubject" placeholder="Sujet de la réponse">
+        </div>
+        <div class="form-group">
+          <label>Réponse :</label>
+          <textarea id="replyMessage" placeholder="Écrivez votre réponse ici..." rows="8"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal cancel" id="cancelReplyBtn" type="button">Annuler</button>
+      <button class="btn-modal send" id="sendReplyBtn" type="button">
+        <i class="bi bi-send-fill"></i> Envoyer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STYLES ===== -->
+<style>
+  :root {
+    --primary:        #EE7A0D;
+    --primary-glow:   rgba(238, 122, 13, 0.18);
+    --primary-hover:  #ff9d42;
+    --content-bg:     #111118;
+    --card-bg:        #16161f;
+    --card-bg2:       #1e1e2d;
+    --text-primary:   #f1f5f9;
+    --text-muted:     #8892a4;
+    --border-subtle:  rgba(255, 255, 255, 0.07);
+    --transition:     0.25s ease;
+  }
+
+  .content-wrapper {
+    background: linear-gradient(135deg, #111118 0%, #16161f 100%);
+    min-height: 100vh;
+    padding: 2.5rem;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: linear-gradient(135deg, rgba(238,122,13,.15) 0%, rgba(238,122,13,.05) 100%);
+    border: 1px solid rgba(238,122,13,.25);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(238,122,13,.1);
+  }
+  .header-left h1 {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 2.2rem;
+    margin: 0;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-shadow: 0 2px 10px rgba(238,122,13,.3);
+  }
+  .header-left .subtitle { color: var(--text-muted); margin: .75rem 0 0; font-size: 1rem; }
+  .header-stats          { display: flex; gap: 2.5rem; align-items: center; }
+  .header-stat           { text-align: center; }
+  .stat-number { display: block; font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: .5rem; }
+  .stat-label  { display: block; font-size: .9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+
+  /* ── TABS ── */
+  .message-tabs { display: flex; gap: 1rem; margin-bottom: 2.5rem; overflow-x: auto; padding-bottom: .75rem; }
+  .message-tabs::-webkit-scrollbar       { height: 4px; }
+  .message-tabs::-webkit-scrollbar-track { background: rgba(238,122,13,.05); border-radius: 10px; }
+  .message-tabs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+  .tab-btn {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .85rem 1.5rem;
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+    border: 2px solid rgba(238,122,13,.2);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: .95rem; font-weight: 600; cursor: pointer;
+    transition: all var(--transition); white-space: nowrap;
+  }
+  .tab-btn:hover  { border-color: var(--primary); background: linear-gradient(135deg, rgba(238,122,13,.1) 0%, rgba(238,122,13,.05) 100%); transform: translateY(-2px); }
+  .tab-btn.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); border-color: var(--primary); color: #0a0a14; box-shadow: 0 8px 24px rgba(238,122,13,.3); }
+  .badge-count { background: rgba(255,255,255,.2); padding: .2rem .6rem; border-radius: 12px; font-size: .85rem; font-weight: 700; }
+  .tab-btn.active .badge-count { background: rgba(10,10,20,.3); }
+
+  /* ── FILTER SECTION ── */
+  .filter-section { display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; align-items: center; }
+  .search-box {
+    flex: 1; min-width: 300px;
+    display: flex; align-items: center;
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+    border: 1px solid rgba(238,122,13,.2); border-radius: 10px;
+    padding: .85rem 1.25rem; color: var(--text-muted); transition: all var(--transition);
+  }
+  .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(238,122,13,.1); }
+  .search-box i   { margin-right: .75rem; color: var(--primary); }
+  .search-box input { background: none; border: none; color: var(--text-primary); width: 100%; font-size: .95rem; }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-box input:focus { outline: none; }
+
+  .filter-controls { display: flex; gap: .75rem; align-items: center; }
+  .filter-select {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+    border: 1px solid rgba(238,122,13,.2); border-radius: 10px;
+    padding: .85rem 1rem; color: var(--text-primary); font-size: .95rem; cursor: pointer;
+    transition: all var(--transition);
+  }
+  .filter-select:hover  { border-color: rgba(238,122,13,.4); }
+  .filter-select:focus  { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(238,122,13,.1); }
+
+  .action-buttons { display: flex; gap: .5rem; }
+  .btn-action {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+    border: 1px solid rgba(238,122,13,.2); border-radius: 10px;
+    color: var(--text-primary); padding: .85rem; cursor: pointer;
+    transition: all var(--transition); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  }
+  .btn-action:hover            { background: rgba(238,122,13,.2); border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+  .btn-action.delete-all:hover { background: rgba(239,68,68,.2); border-color: #ef4444; color: #ef4444; }
+
+  /* ── MESSAGES SECTION ── */
+  .messages-section {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+    border: 1px solid rgba(238,122,13,.15); border-radius: 12px;
+    margin-bottom: 2rem; overflow: hidden;
+    transition: all var(--transition); box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  }
+  .messages-section:hover { border-color: rgba(238,122,13,.3); }
+
+  .section-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(238,122,13,.1) 0%, rgba(238,122,13,.05) 100%);
+    border-bottom: 1px solid rgba(238,122,13,.2);
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; transition: all var(--transition);
+  }
+  .section-header:hover { background: linear-gradient(135deg, rgba(238,122,13,.15) 0%, rgba(238,122,13,.08) 100%); }
+  .section-title-group   { display: flex; align-items: center; gap: 1rem; }
+  .section-title-group h2 { margin: 0; color: var(--primary); font-size: 1.3rem; font-family: 'Syncopate', sans-serif; }
+  .section-title-group i  { font-size: 1.5rem; color: var(--primary); }
+  .section-count { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #0a0a14; padding: .35rem .75rem; border-radius: 20px; font-weight: 700; font-size: .9rem; }
+
+  .section-toggle { background: none; border: none; color: var(--primary); font-size: 1.2rem; cursor: pointer; transition: transform var(--transition); padding: .5rem; }
+  .section-toggle:hover    { transform: scale(1.2); }
+  .section-toggle.collapsed { transform: rotate(-90deg); }
+
+  /* ── MESSAGES TABLE ── */
+  .messages-table-wrapper { overflow-x: auto; }
+  .messages-table { width: 100%; border-collapse: collapse; }
+  .messages-table tbody tr { border-bottom: 1px solid rgba(238,122,13,.08); transition: all var(--transition); }
+  .messages-table tbody tr:hover { background: linear-gradient(90deg, rgba(238,122,13,.08) 0%, rgba(238,122,13,.04) 100%); }
+  .messages-table td { padding: 1.25rem; color: var(--text-primary); }
+
+  .checkbox-cell { width: 50px; }
+  .status-cell   { width: 130px; }
+  .sender-cell   { width: 220px; }
+  .date-cell     { width: 90px; text-align: center; color: var(--text-muted); font-size: .9rem; }
+  .actions-cell  { width: 170px; display: flex; gap: .5rem; justify-content: flex-end; align-items: center; }
+
+  input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+
+  /* ── SENDER ── */
+  .sender-info    { display: flex; align-items: center; gap: .75rem; }
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .9rem; color: #0a0a14; flex-shrink: 0;
+  }
+  .avatar.blue   { background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%); color: #fff; }
+  .avatar.green  { background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%); color: #fff; }
+  .avatar.red    { background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); color: #fff; }
+  .avatar.orange { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); color: #fff; }
+  .sender-details  { display: flex; flex-direction: column; gap: .25rem; }
+  .sender-name     { color: var(--text-primary); font-weight: 600; font-size: .95rem; }
+  .sender-email    { color: var(--text-muted); font-size: .85rem; }
+
+  /* ── PREVIEW ── */
+  .preview-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
+  .preview-header strong { color: var(--text-primary); flex: 1; }
+  .preview-text   { color: var(--text-muted); font-size: .9rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 420px; }
+
+  /* ── STATUS BADGES ── */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .4rem .85rem; border-radius: 20px;
+    font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; white-space: nowrap;
+  }
+  .status-badge.unread   { background: rgba(239,68,68,.15);   color: #ef4444; }
+  .status-badge.read     { background: rgba(34,211,153,.15);  color: #34d399; }
+  .status-badge.replied  { background: rgba(34,197,94,.15);   color: #22c55e; }
+  .status-badge.archived { background: rgba(107,114,128,.15); color: #d1d5db; }
+
+  /* ── CATEGORY BADGES ── */
+  .category-badge {
+    display: inline-block; padding: .35rem .75rem; border-radius: 6px;
+    font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; white-space: nowrap;
+  }
+  .category-badge.general    { background: rgba(238,122,13,.2);  color: var(--primary); }
+  .category-badge.devis      { background: rgba(72,187,237,.2);  color: #48bbf0; }
+  .category-badge.reclamation{ background: rgba(168,85,247,.2);  color: #d8b4fe; }
+  .category-badge.partenariat{ background: rgba(34,197,94,.2);   color: #34d399; }
+
+  /* ── ACTION BUTTONS ── */
+  .btn-icon {
+    background: none; border: none; color: var(--text-muted);
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all var(--transition); font-size: 1rem;
+  }
+  .btn-icon:hover          { background: rgba(238,122,13,.15); color: var(--primary); transform: scale(1.1); }
+  .btn-icon.delete-btn:hover  { background: rgba(239,68,68,.15);  color: #ef4444; }
+  .btn-icon.archive-btn:hover { background: rgba(107,114,128,.15); color: #d1d5db; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
+  .empty-state i    { font-size: 2.5rem; display: block; margin-bottom: 1rem; color: var(--primary); opacity: .3; }
+  .empty-state span { font-size: 1rem; }
+
+  /* ── MODAL ── */
+  .modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.8); z-index: 2000;
+    align-items: center; justify-content: center; backdrop-filter: blur(6px);
+  }
+  .modal.show { display: flex; animation: modalSlideIn .35s cubic-bezier(.34,1.56,.64,1); }
+
+  @keyframes modalSlideIn {
+    from { opacity: 0; transform: scale(.9) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-content {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+    border: 1px solid rgba(238,122,13,.25); border-radius: 16px;
+    width: 90%; max-width: 660px; max-height: 90vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 25px 50px rgba(0,0,0,.6), 0 0 100px rgba(238,122,13,.15);
+  }
+  .modal-header {
+    padding: 2rem; border-bottom: 1px solid rgba(238,122,13,.15);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .modal-header h2 { margin: 0; color: var(--primary); font-size: 1.4rem; font-family: 'Syncopate', sans-serif; display: flex; align-items: center; gap: .75rem; }
+  .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; transition: all var(--transition); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+  .modal-close:hover { color: var(--primary); transform: rotate(90deg); background: rgba(238,122,13,.1); }
+  .modal-body   { flex: 1; overflow-y: auto; padding: 2rem; }
+  .modal-footer { padding: 2rem; border-top: 1px solid rgba(238,122,13,.15); display: flex; gap: 1rem; justify-content: flex-end; }
+
+  /* ── MESSAGE DETAIL ── */
+  .message-detail { display: flex; flex-direction: column; gap: 1.5rem; }
+  .detail-row { display: grid; grid-template-columns: 120px 1fr; gap: 1rem; align-items: start; }
+  .detail-row label     { color: var(--primary); font-weight: 700; font-size: .95rem; }
+  .detail-row span      { color: var(--text-primary); word-break: break-word; }
+  .detail-message       { display: flex; flex-direction: column; gap: .75rem; }
+  .detail-message label { color: var(--primary); font-weight: 700; font-size: .95rem; }
+  .message-content {
+    background: linear-gradient(135deg, rgba(238,122,13,.08) 0%, rgba(238,122,13,.03) 100%);
+    border: 1px solid rgba(238,122,13,.2); border-radius: 10px;
+    padding: 1.25rem; color: var(--text-primary); line-height: 1.7; white-space: pre-wrap; word-wrap: break-word;
+  }
+
+  /* ── REPLY FORM ── */
+  .reply-form { display: flex; flex-direction: column; gap: 1.5rem; }
+  .form-group { display: flex; flex-direction: column; gap: .75rem; }
+  .form-group label { color: var(--primary); font-weight: 700; font-size: .95rem; }
+  .form-group input,
+  .form-group textarea {
+    background: linear-gradient(135deg, rgba(238,122,13,.08) 0%, rgba(238,122,13,.03) 100%);
+    border: 1px solid rgba(238,122,13,.2); border-radius: 10px;
+    padding: .85rem 1rem; color: var(--text-primary);
+    font-family: inherit; font-size: .95rem; transition: all var(--transition);
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: var(--text-muted); }
+  .form-group input:focus,
+  .form-group textarea:focus { outline: none; border-color: var(--primary); background: linear-gradient(135deg, rgba(238,122,13,.15) 0%, rgba(238,122,13,.08) 100%); box-shadow: 0 0 0 3px rgba(238,122,13,.1); }
+  .form-group textarea { resize: vertical; min-height: 150px; }
+
+  /* ── MODAL BUTTONS ── */
+  .btn-modal {
+    padding: .85rem 1.75rem; border-radius: 10px; border: none;
+    font-size: .95rem; font-weight: 700; cursor: pointer;
+    transition: all var(--transition); display: flex; align-items: center; justify-content: center; gap: .6rem;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .btn-modal.cancel { background: rgba(107,114,128,.2); color: #d1d5db; border: 1px solid rgba(107,114,128,.3); }
+  .btn-modal.cancel:hover { background: rgba(107,114,128,.35); border-color: #d1d5db; transform: translateY(-2px); }
+  .btn-modal.reply,
+  .btn-modal.send  { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #0a0a14; }
+  .btn-modal.reply:hover,
+  .btn-modal.send:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(238,122,13,.4); }
+
+  /* ── TOAST NOTIFICATION ── */
+  .notification {
+    position: fixed; bottom: 2rem; right: 2rem;
+    padding: 1rem 1.5rem; border-radius: 12px;
+    color: #0a0a14; font-weight: 600; z-index: 9999;
+    display: flex; align-items: center; gap: .75rem;
+    transform: translateY(120px); opacity: 0;
+    transition: all .4s cubic-bezier(.34,1.56,.64,1);
+    background: linear-gradient(135deg, #22c55e, #4ade80);
+    box-shadow: 0 10px 30px rgba(34,197,94,.3);
+    pointer-events: none;
+  }
+  .notification.show  { transform: translateY(0); opacity: 1; }
+  .notification.error { background: linear-gradient(135deg, #ef4444, #f87171); box-shadow: 0 10px 30px rgba(239,68,68,.3); color: #fff; }
+  .notification-icon  { font-size: 1.2rem; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes spin    { to { transform: rotate(360deg); } }
+  @keyframes slideOut { to { transform: translateX(120%); opacity: 0; } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .sender-cell { display: none; }
+  }
+  @media (max-width: 768px) {
+    .content-wrapper { padding: 1.25rem; }
+    .page-header { flex-direction: column; text-align: center; }
+    .header-stats { justify-content: center; width: 100%; margin-top: 1.5rem; gap: 2rem; }
+    .message-tabs { flex-wrap: wrap; }
+    .filter-section { flex-direction: column; }
+    .search-box, .filter-select { width: 100%; min-width: unset; }
+    .filter-controls { width: 100%; flex-direction: column; }
+    .checkbox-cell, .status-cell { display: none; }
+    .messages-table td { padding: .85rem; }
+    .preview-text { max-width: 200px; }
+    .modal-content { width: 95%; max-height: 85vh; }
+    .detail-row { grid-template-columns: 1fr; gap: .25rem; }
+    .modal-footer { flex-direction: column; }
+    .btn-modal { width: 100%; }
+  }
+</style>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  const CSRF = document.querySelector('meta[name="csrf-token"]').content;
+  let currentMessageId = null;
+
+  /* ── Utility: JSON fetch ── */
+  function fetchJSON(url, body = null) {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'X-CSRFToken': CSRF, 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : null,
+    }).then(r => r.json());
+  }
+
+  /* ── Toast notification ── */
+  function showNotification(msg, type = 'success') {
+    const el   = document.getElementById('notification');
+    const icon = el.querySelector('.notification-icon');
+    const text = document.getElementById('notificationText');
+    text.textContent = msg;
+    el.className = `notification ${type}`;
+    icon.className = `bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle'} notification-icon`;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('show'), 3500);
+  }
+
+  /* ── Toggle section collapse ── */
+  function toggleSectionByHeader(header) {
+    const section = header.closest('.messages-section');
+    const wrapper = section.querySelector('.messages-table-wrapper');
+    const toggle  = header.querySelector('.section-toggle');
+    const hidden  = wrapper.style.display === 'none';
+    wrapper.style.display = hidden ? '' : 'none';
+    toggle.classList.toggle('collapsed', !hidden);
+  }
+
+  /* ── Tabs ── */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      document.querySelectorAll('.messages-section').forEach(s => {
+        s.style.display = (filter === 'all' || s.dataset.section === filter) ? '' : 'none';
+      });
+    });
+  });
+
+  /* ── Combined search + category filter ── */
+  function applyFilters() {
+    const q   = document.getElementById('searchInput').value.toLowerCase();
+    const cat = document.getElementById('categoryFilter').value;
+    document.querySelectorAll('.message-row').forEach(row => {
+      const matchQ   = !q   || row.textContent.toLowerCase().includes(q);
+      const matchCat = !cat || row.dataset.category === cat;
+      row.style.display = (matchQ && matchCat) ? '' : 'none';
+    });
+  }
+  document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+  document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+
+  /* ── Refresh ── */
+  document.getElementById('refreshBtn').addEventListener('click', function () {
+    const icon = this.querySelector('i');
+    icon.style.animation = 'spin .6s linear';
+    setTimeout(() => { icon.style.animation = ''; location.reload(); }, 600);
+  });
+
+  /* ── View button → mark as read + show modal ── */
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      currentMessageId = id;
+      fetchJSON(`/messages/${id}/read/`)
+        .then(data => {
+          if (data.status !== 'success') { showNotification('Erreur lors du chargement.', 'error'); return; }
+          const d = data.data;
+          document.getElementById('modalFrom').textContent     = `${d.sender_name} (${d.sender_email})`;
+          document.getElementById('modalPhone').textContent    = d.sender_phone || 'Non renseigné';
+          const catEl = document.getElementById('modalCategory');
+          catEl.textContent = d.category_display;
+          catEl.className   = `category-badge ${d.category}`;
+          document.getElementById('modalDate').textContent     = d.created_at;
+          document.getElementById('modalSubject').textContent  = d.subject;
+          document.getElementById('modalMessage').textContent  = d.message;
+          // Update badge in row if it was "Non lu"
+          const row   = document.querySelector(`.message-row[data-id="${id}"]`);
+          const badge = row && row.querySelector('.status-badge.unread');
+          if (badge) { badge.className = 'status-badge read'; badge.innerHTML = '<i class="bi bi-check-circle"></i> Lu'; }
+          document.getElementById('messageModal').classList.add('show');
+        })
+        .catch(() => showNotification('Erreur réseau.', 'error'));
+    });
+  });
+
+  /* ── Close detail modal ── */
+  ['closeModal', 'cancelBtn'].forEach(id => {
+    document.getElementById(id).addEventListener('click', () => {
+      document.getElementById('messageModal').classList.remove('show');
+    });
+  });
+
+  /* ── Reply from detail modal ── */
+  document.getElementById('replyBtn').addEventListener('click', () => {
+    const fromText = document.getElementById('modalFrom').textContent;
+    const email    = fromText.match(/\(([^)]+)\)$/)?.[1] || '';
+    const subject  = document.getElementById('modalSubject').textContent;
+    document.getElementById('replyTo').value      = email;
+    document.getElementById('replySubject').value = `Re: ${subject}`;
+    document.getElementById('replyMessage').value = '';
+    document.getElementById('messageModal').classList.remove('show');
+    document.getElementById('replyModal').classList.add('show');
+  });
+
+  /* ── Reply button in row ── */
+  document.querySelectorAll('.reply-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      currentMessageId = this.dataset.id;
+      document.getElementById('replyTo').value      = this.dataset.email  || '';
+      document.getElementById('replySubject').value = `Re: ${this.dataset.subject || ''}`;
+      document.getElementById('replyMessage').value = '';
+      document.getElementById('replyModal').classList.add('show');
+    });
+  });
+
+  /* ── Close reply modal ── */
+  ['closeReplyModal', 'cancelReplyBtn'].forEach(id => {
+    document.getElementById(id).addEventListener('click', () => {
+      document.getElementById('replyModal').classList.remove('show');
+    });
+  });
+
+  /* ── Send reply ── */
+  document.getElementById('sendReplyBtn').addEventListener('click', () => {
+    const subject = document.getElementById('replySubject').value.trim();
+    const message = document.getElementById('replyMessage').value.trim();
+    if (!message) { showNotification('Veuillez écrire votre réponse.', 'error'); return; }
+    const btn = document.getElementById('sendReplyBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Envoi…';
+    fetchJSON(`/messages/${currentMessageId}/reply/`, { subject, message })
+      .then(data => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-send-fill"></i> Envoyer';
+        if (data.status === 'success') {
+          document.getElementById('replyModal').classList.remove('show');
+          showNotification('Réponse envoyée avec succès!');
+          // Update status badge in row
+          const row   = document.querySelector(`.message-row[data-id="${currentMessageId}"]`);
+          const badge = row && row.querySelector('.status-badge');
+          if (badge) { badge.className = 'status-badge replied'; badge.innerHTML = '<i class="bi bi-reply"></i> Répondu'; }
+        } else {
+          showNotification(data.message || 'Erreur lors de l\'envoi.', 'error');
+        }
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-send-fill"></i> Envoyer';
+        showNotification('Erreur réseau.', 'error');
+      });
+  });
+
+  /* ── Delete button ── */
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      if (!confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) return;
+      const id  = this.dataset.id;
+      const row = this.closest('tr');
+      fetchJSON(`/messages/${id}/delete/`)
+        .then(data => {
+          if (data.status === 'success') {
+            row.style.animation = 'slideOut .3s ease forwards';
+            setTimeout(() => row.remove(), 320);
+            showNotification('Message supprimé.');
+          } else {
+            showNotification('Erreur lors de la suppression.', 'error');
+          }
+        })
+        .catch(() => showNotification('Erreur réseau.', 'error'));
+    });
+  });
+
+  /* ── Archive button ── */
+  document.querySelectorAll('.archive-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id  = this.dataset.id;
+      const row = this.closest('tr');
+      fetchJSON(`/messages/${id}/archive/`)
+        .then(data => {
+          if (data.status === 'success') {
+            row.style.animation = 'slideOut .3s ease forwards';
+            setTimeout(() => row.remove(), 320);
+            showNotification('Message archivé avec succès!');
+          } else {
+            showNotification('Erreur lors de l\'archivage.', 'error');
+          }
+        })
+        .catch(() => showNotification('Erreur réseau.', 'error'));
+    });
+  });
+
+  /* ── Delete all selected ── */
+  document.getElementById('deleteAllBtn').addEventListener('click', () => {
+    const checked = [...document.querySelectorAll('.message-checkbox:checked')];
+    if (!checked.length) { showNotification('Aucun message sélectionné.', 'error'); return; }
+    if (!confirm(`Supprimer ${checked.length} message(s) sélectionné(s) ?`)) return;
+    const ids = checked.map(cb => cb.value);
+    Promise.all(ids.map(id => fetchJSON(`/messages/${id}/delete/`)))
+      .then(() => {
+        ids.forEach(id => {
+          const row = document.querySelector(`.message-row[data-id="${id}"]`);
+          if (row) { row.style.animation = 'slideOut .3s ease forwards'; setTimeout(() => row.remove(), 320); }
+        });
+        showNotification(`${ids.length} message(s) supprimé(s).`);
+      })
+      .catch(() => showNotification('Erreur lors de la suppression groupée.', 'error'));
+  });
+
+  /* ── Close modals on outside click ── */
+  window.addEventListener('click', e => {
+    const msgModal   = document.getElementById('messageModal');
+    const replyModal = document.getElementById('replyModal');
+    if (e.target === msgModal)   msgModal.classList.remove('show');
+    if (e.target === replyModal) replyModal.classList.remove('show');
+  });
+</script>
+
+{% endblock %}

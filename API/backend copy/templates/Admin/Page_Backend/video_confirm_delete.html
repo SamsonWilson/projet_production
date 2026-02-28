@@ -1,0 +1,85 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block title %}Confirmer la suppression{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3 fw-bold text-white">
+                <i class="bi bi-exclamation-triangle"></i> Confirmer la suppression
+            </h1>
+        </div>
+    </div>
+
+    <!-- Message de confirmation -->
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">
+            <i class="bi bi-exclamation-circle"></i> Attention!
+        </h4>
+        <p class="mb-0">
+            Êtes-vous sûr de vouloir supprimer la vidéo <strong>"{{ video.title }}"</strong>?<br>
+            <small class="text-muted">Cette action est irréversible.</small>
+        </p>
+    </div>
+
+    <!-- Détails de la vidéo -->
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-2">
+                        <strong>Titre:</strong> {{ video.title }}
+                    </p>
+                    <p class="mb-2">
+                        <strong>Catégorie:</strong> {{ video.get_category_display }}
+                    </p>
+                    <p class="mb-2">
+                        <strong>Statut:</strong> 
+                        {% if video.status == 'published' %}
+                            <span class="badge bg-success">Publié</span>
+                        {% elif video.status == 'draft' %}
+                            <span class="badge bg-warning">Brouillon</span>
+                        {% else %}
+                            <span class="badge bg-danger">Archivé</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-2">
+                        <strong>Créé le:</strong> {{ video.created_at|date:"d/m/Y H:i" }}
+                    </p>
+                    <p class="mb-2">
+                        <strong>Modifié le:</strong> {{ video.updated_at|date:"d/m/Y H:i" }}
+                    </p>
+                    <p class="mb-2">
+                        <strong>Taille du fichier:</strong> 
+                        {% if video.video_file %}
+                            {{ video.video_file.size|filesizeformat }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-lg">
+                    <i class="bi bi-trash"></i> Supprimer définitivement
+                </button>
+                <a href="{% url 'video_list' %}" class="btn btn-secondary btn-lg">
+                    <i class="bi bi-arrow-left"></i> Annuler
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block title %}Gestion des Vidéos{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h1 class="h3 fw-bold text-white">
+                <i class="bi bi-film"></i> Gestion des Vidéos
+            </h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'video_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Ajouter une vidéo
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtrage par statut -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="btn-group" role="group">
+                <a href="{% url 'video_list' %}" class="btn btn-outline-secondary {% if not status_filter %}active{% endif %}">
+                    Tous
+                </a>
+                <a href="{% url 'video_list' %}?status=published" class="btn btn-outline-success {% if status_filter == 'published' %}active{% endif %}">
+                    Publiés
+                </a>
+                <a href="{% url 'video_list' %}?status=draft" class="btn btn-outline-warning {% if status_filter == 'draft' %}active{% endif %}">
+                    Brouillons
+                </a>
+                <a href="{% url 'video_list' %}?status=archived" class="btn btn-outline-danger {% if status_filter == 'archived' %}active{% endif %}">
+                    Archivés
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table des vidéos -->
+    {% if videos %}
+    <div class="table-responsive">
+        <table class="table table-hover table-dark">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Titre</th>
+                    <th>Catégorie</th>
+                    <th>Statut</th>
+                    <th>Mise en avant</th>
+                    <th>Durée</th>
+                    <th>Créé le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                <tr>
+                    <td>
+                        <strong>{{ video.title }}</strong>
+                    </td>
+                    <td>
+                        <span class="badge bg-info">{{ video.get_category_display }}</span>
+                    </td>
+                    <td>
+                        <!-- bouton on/off qui gère publié ↔ archivé (brouillon conserve son badge) -->
+                        {% if video.status == 'draft' %}
+                            <span class="badge bg-warning">Brouillon</span>
+                        {% else %}
+                            <form method="post" action="{% url 'video_toggle_status' video.pk %}">
+                                {% csrf_token %}
+                                {% if video.status == 'published' %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Archiver">
+                                        <i class="bi bi-toggle-on"></i>
+                                    </button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-sm btn-outline-success" title="Publier">
+                                        <i class="bi bi-toggle-off"></i>
+                                    </button>
+                                {% endif %}
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+    <form method="post" action="{% url 'video_toggle_featured' video.pk %}">
+        {% csrf_token %}
+        
+        {% if video.is_featured %}
+            <button type="submit"
+                    class="btn btn-sm btn-outline-warning"
+                    title="Désactiver mise en avant">
+                <i class="bi bi-star-fill"></i>
+            </button>
+        {% else %}
+            <button type="submit"
+                    class="btn btn-sm btn-outline-secondary"
+                    title="Mettre en avant">
+                <i class="bi bi-star"></i>
+            </button>
+        {% endif %}
+    </form>
+</td>
+                    <td>
+                        {% if video.duration %}
+                            {{ video.duration }}s
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <small class="text-muted">{{ video.created_at|date:"d/m/Y" }}</small>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="{% url 'video_detail' video.pk %}" class="btn btn-info" title="Voir">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'video_update' video.pk %}" class="btn btn-warning" title="Modifier">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'video_delete' video.pk %}" class="btn btn-danger" title="Supprimer">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">Première</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédente</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivante</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Dernière</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        <i class="bi bi-info-circle"></i> Aucune vidéo trouvée. 
+        <a href="{% url 'video_create' %}">Ajouter une vidéo</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

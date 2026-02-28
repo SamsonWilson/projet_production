@@ -1,0 +1,39 @@
+{% extends 'Admin/connexion/base.html' %}
+{% load static %}
+
+{% block title %}Déconnexion | Video Producer{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card text-center">
+
+        <!-- Header -->
+        <div class="auth-header">
+            {% include 'Admin/connexion/includes/logo.html' %}
+            <div class="logout-icon mb-3">
+                <i class="bi bi-door-open" style="font-size: 3rem; color: #e94560;"></i>
+            </div>
+            <h2 class="auth-title">Déconnexion</h2>
+            <p class="auth-subtitle">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+        </div>
+
+        <!-- Actions -->
+        <form method="post" action="{% url 'deconnexion' %}">
+            {% csrf_token %}
+            <div class="d-flex gap-3 justify-content-center mt-2">
+                <a href="{% url 'tableau_de_bord' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                    <i class="bi bi-arrow-left me-1"></i> Annuler
+                </a>
+                <button type="submit" class="btn-auth btn-auth--sm">
+                    <i class="bi bi-box-arrow-right me-2"></i> Confirmer
+                </button>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p>Vous serez redirigé vers la page de connexion.</p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

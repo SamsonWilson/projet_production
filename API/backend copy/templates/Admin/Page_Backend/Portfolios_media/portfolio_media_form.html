@@ -1,0 +1,97 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        {% if form.instance.pk %}
+                            Modifier un média
+                        {% else %}
+                            Ajouter un média
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Type de média -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.media_type.label }}</label>
+                            {{ form.media_type }}
+                            {% if form.media_type.errors %}
+                                <div class="text-danger">
+                                    {{ form.media_type.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Fichier -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.file.label }}</label>
+                            {{ form.file }}
+                            {% if form.file.errors %}
+                                <div class="text-danger">
+                                    {{ form.file.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Miniature -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.thumbnail.label }}</label>
+                            {{ form.thumbnail }}
+                            <small class="text-muted">
+                                Optionnel — recommandé pour les vidéos
+                            </small>
+                            {% if form.thumbnail.errors %}
+                                <div class="text-danger">
+                                    {{ form.thumbnail.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Ordre -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.order.label }}</label>
+                            {{ form.order }}
+                            {% if form.order.errors %}
+                                <div class="text-danger">
+                                    {{ form.order.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Boutons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'portfolio_list' %}" class="btn btn-secondary">
+                                ← Retour
+                            </a>
+
+                            <button type="submit" class="btn btn-dark">
+                                💾 Enregistrer
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'Admin/connexion/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Inscription | Video Producer{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card auth-card--wide">
+
+        <!-- Header -->
+        <div class="auth-header">
+            {% include 'Admin/connexion/includes/logo.html' %}
+            <h2 class="auth-title">Créer un compte</h2>
+            <p class="auth-subtitle">Rejoignez la communauté des créateurs vidéo.</p>
+        </div>
+
+        <!-- Erreurs non liées aux champs -->
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger rounded-3 mb-3">
+                {% for error in form.non_field_errors %}
+                    <p class="mb-0"><i class="bi bi-exclamation-triangle me-1"></i> {{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Formulaire d'inscription -->
+        <form method="post" class="auth-form" novalidate>
+            {% csrf_token %}
+            <div class="form-fields">
+                {{ form|crispy }}
+            </div>
+
+            <p class="terms-text">
+                En vous inscrivant, vous acceptez nos
+                <a href="#">Conditions d'utilisation</a>.
+            </p>
+
+            <button type="submit" class="btn-auth">
+                <i class="bi bi-person-plus me-2"></i> Créer mon compte
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p>Vous avez déjà un compte ?
+                <a href="{% url 'connexion' %}">Se connecter</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

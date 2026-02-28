@@ -1,0 +1,243 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Portfolio | KINÉRA FILM FIXERS{% endblock %}
+
+{% block content %}
+<!-- Police Inter pour une lisibilité maximale -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        /* 1. MODIFIE ICI LES COULEURS DE TON LOGO */
+        --brand-color: #EA9008;      /* Couleur principale (Jaune/Or) */
+        --bg-deep: #0F1115;          /* Fond principal (Noir profond) */
+        --bg-card: #1C1F26;          /* Fond des cartes (Gris foncé) */
+        --text-main: #E2E8F0;        /* Texte principal */
+        --text-muted: #94A3B8;       /* Texte secondaire */
+    }
+
+    body {
+        background-color: var(--bg-deep);
+        color: var(--text-main);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* Hero Section */
+    .hero-header {
+      
+    /* On baisse l'opacité à 0.3 pour laisser passer l'image */
+     background: linear-gradient(rgba(8,8,8,0.8), rgba(8,8,8,1)),
+                url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2000&auto=format&fit=crop');
+
+        background-size: cover;
+        background-position: center;
+        padding: 100px 0 60px 0;
+        text-align: center;
+    }
+
+    .hero-header h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--brand-color);
+        text-transform: uppercase;
+        letter-spacing: -1px;
+    }
+
+    /* Video Section */
+    .section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: center;
+        color: var(--text-main);
+    }
+
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 40px;
+        margin-top: 40px;
+    }
+
+    .video-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .video-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--brand-color);
+    }
+
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* Ratio 16:9 */
+        height: 0;
+        overflow: hidden;
+    }
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    .video-info {
+        padding: 25px;
+    }
+
+    .video-info h3 {
+        color: var(--brand-color);
+        margin-bottom: 10px;
+        font-size: 1.4rem;
+    }
+
+    .video-info p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    /* Partners Section */
+    .partners-section {
+        background: var(--bg-card);
+        padding: 80px 40px;
+        border-radius: 30px;
+        margin: 80px 0;
+    }
+
+    .partners-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .partner-item {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 20px;
+        border-radius: 12px;
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.3s;
+        text-transform: uppercase;
+    }
+
+    .partner-item:hover {
+        background: var(--brand-color);
+        color: var(--bg-deep);
+        transform: scale(1.05);
+    }
+
+    /* CTA Section */
+    .cta-area {
+        text-align: center;
+        padding: 80px 0;
+    }
+
+    .btn-brand {
+        background-color: var(--brand-color);
+        color: var(--bg-deep) !important;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 18px 45px;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    .btn-brand:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 768px) {
+        .video-grid { grid-template-columns: 1fr; }
+        .hero-header h1 { font-size: 2.5rem; }
+    }
+</style>
+
+<header class="hero-header">
+    <div class="container">
+        <h1>Our Portfolio</h1>
+        <p>A showcase of cinematic storytelling and international collaborations across the African continent.</p>
+    </div>
+</header>
+<main class="container">
+    <!-- FEATURED PRODUCTIONS -->
+    <section style="padding: 60px 0;">
+        <h2 class="section-title">🎬 Featured Productions</h2>
+        
+        <div class="video-grid">
+            <!-- Project 1: Music Video -->
+            <article class="video-card">
+                <div class="video-container">
+                    <!-- Remplace par ton lien YouTube/Vimeo réel -->
+                    <iframe src="https://www.youtube.com/embed/REAL_ID_HERE" title="Agboti Kékéli Music Video" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Official Music Video – Agboti Kékéli</h3>
+                    <p>
+                        A high-energy production for Togolese icon Agboti Kékéli. We handled full production, from location scouting in Lome to final color grading.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Project 2: Campaign Film -->
+            <article class="video-card">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/REAL_ID_HERE" title="ATBEF Campaign Film" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Campaign Film – ATBEF</h3>
+                    <p>
+                        An impactful awareness film produced for ATBEF. This project highlights our ability to handle sensitive social narratives with professional cinematic quality.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- PARTNERS GRID -->
+    <section class="partners-section">
+        <h2 class="section-title" style="margin-bottom: 50px;">🤝 Trusted Partners & Clients</h2>
+        <div class="partners-grid">
+            <div class="partner-item">Suisse Dragons</div>
+            <div class="partner-item">Challenge Works UK</div>
+            <div class="partner-item">BAD</div>
+            <div class="partner-item">TVT</div>
+            <div class="partner-item">Présidence Togolaise</div>
+            <div class="partner-item">DAAD</div>
+            <div class="partner-item">Hyundai</div>
+            <div class="partner-item">ATBEF</div>
+            <div class="partner-item">GIZ Bénin</div>
+            <div class="partner-item">Dreamcatcher Kenya</div>
+            <div class="partner-item">BOAD</div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta-area">
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Ready to create something legendary?</h2>
+        <p style="color: var(--text-muted); margin-bottom: 40px;">Whether it's a music video, documentary, or commercial, let's bring your vision to life.</p>
+        <a href="{% url 'contact' %}" class="btn-brand shadow-lg">Work With Us</a>
+    </section>
+
+</main>
+{% endblock %}

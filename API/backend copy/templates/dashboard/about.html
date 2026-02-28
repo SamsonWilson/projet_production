@@ -1,0 +1,247 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}About Us | KINÉRA FILM FIXERS{% endblock %}
+
+{% block content %}
+<!-- Police Inter pour un look moderne -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --brand-color: #EA8808;      /* Ta couleur de logo (Jaune/Or) */
+        --bg-deep: #0D0F12;          /* Fond noir cinéma */
+        --bg-card: #181B20;          /* Fond des blocs gris sombre */
+        --text-main: #E5E7EB;        /* Texte clair */
+        --text-muted: #9CA3AF;       /* Texte secondaire */
+    }
+
+    body {
+        background-color: var(--bg-deep);
+        color: var(--text-main);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.8;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 25px; }
+
+    /* Hero Section */
+    .about-hero {
+        background: linear-gradient(rgba(8,8,8,0.8), rgba(8,8,8,1)),
+        url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2000&auto=format&fit=crop') ;
+        
+        background-size: cover;
+        background-position: center;
+        padding: 120px 0 80px;
+        text-align: center;
+    }
+
+    .about-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--brand-color);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .about-hero p {
+        font-size: 1.4rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--text-main);
+    }
+
+    /* Mission Section */
+    .mission-section {
+        padding: 80px 0;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .mission-content h2 {
+        font-size: 2.5rem;
+        color: var(--brand-color);
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .mission-content h2::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: var(--brand-color);
+        margin-top: 10px;
+    }
+
+    .mission-content p {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        color: var(--text-main);
+    }
+
+    .mission-highlight {
+        background: var(--bg-card);
+        padding: 40px;
+        border-radius: 20px;
+        border-left: 5px solid var(--brand-color);
+    }
+
+    /* Team Section */
+    .team-section {
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        margin-top: 50px;
+    }
+
+    .team-member {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 30px;
+        transition: 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .team-member:hover {
+        transform: translateY(-10px);
+        border-color: var(--brand-color);
+    }
+
+    .member-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+        border: 3px solid var(--brand-color);
+        padding: 5px;
+    }
+
+    .team-member h4 {
+        font-size: 1.3rem;
+        color: var(--text-main);
+        margin-bottom: 5px;
+    }
+
+    .team-member span {
+        color: var(--brand-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    /* CTA Area */
+    .cta-area {
+        background: var(--bg-card);
+        padding: 80px 40px;
+        border-radius: 30px;
+        text-align: center;
+        margin: 80px 0;
+    }
+
+    .btn-custom {
+        background-color: var(--brand-color);
+        color: var(--bg-deep) !important;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 18px 45px;
+        border-radius: 12px;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+    .btn-custom:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    @media (max-width: 900px) {
+        .mission-section { grid-template-columns: 1fr; }
+        .about-hero h1 { font-size: 2.5rem; }
+    }
+</style>
+
+<header class="about-hero">
+    <div class="container">
+        <h1>About Us</h1>
+        <p>"Who understands Africa better than Africans?"</p>
+    </div>
+</header>
+
+<main class="container">
+    
+    <!-- MISSION SECTION -->
+    <section class="mission-section">
+        <div class="mission-content">
+            <h2>Our Mission</h2>
+            <p>
+                At <strong>KINÉRA FILM FIXERS</strong>, we bridge the gap between international film productions and authentic African stories. Based in Cotonou, Benin, our mission is to offer seamless production support across the continent.
+            </p>
+            <p>
+                Our fixers have a thorough mastery of diverse production environments — whether urban, rural, remote, or sensitive locations — and are fully capable of handling all logistics, permits, and unforeseen challenges.
+            </p>
+            <div class="mission-highlight">
+                <p style="margin-bottom: 0; font-style: italic;">
+                    "We transform ambitious projects into seamless and successful experiences while preserving the authenticity and richness of African stories."
+                </p>
+            </div>
+        </div>
+        <div class="mission-visual">
+            <!-- Tu peux mettre une belle image de tournage ici -->
+            <img src="{% static 'css/image/about-thumb.jpg' %}" alt="Cinematography" style="width: 150%; height: 350px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+        </div>
+    </section>
+
+    <!-- TEAM SECTION -->
+    <section class="team-section">
+        <h2 style="font-size: 2.5rem; color: var(--brand-color);">Our Leadership Team</h2>
+        <p style="color: var(--text-muted);">Experienced professionals dedicated to your production success.</p>
+        
+        <div class="team-grid">
+            <!-- Member 1 -->
+            <div class="team-member">
+                <img src="{% static 'css/image/about-thumb.jpg' %}" alt="John Mensah" class="member-img">
+                <h4>John Mensah</h4>
+                <span>Executive Producer / Founder</span>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Expert in cross-border logistics and African cinema heritage.</p>
+            </div>
+
+            <!-- Member 2 -->
+            <div class="team-member">
+                <img src="{% static 'css/image/about-thumb.jpg' %}" alt="Amina Diallo" class="member-img">
+                <h4>Amina Diallo</h4>
+                <span>Production Coordinator</span>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Specialist in West African permits and local crew management.</p>
+            </div>
+
+            <!-- Member 3 -->
+            <div class="team-member">
+                <img src="{% static 'css/image/about-thumb.jpg' %}" alt="Samuel Njoroge" class="member-img">
+                <h4>Samuel Njoroge</h4>
+                <span>Fixer Supervisor</span>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Handling East African operations and remote location security.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta-area">
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Ready to work with our professional team?</h2>
+        <p style="color: var(--text-muted); margin-bottom: 40px;">Contact us today to discuss your next production in Africa.</p>
+        <a href="{% url 'contact' %}" class="btn-custom">Get in Touch</a>
+    </section>
+
+</main>
+{% endblock %}

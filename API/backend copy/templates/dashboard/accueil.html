@@ -1,0 +1,393 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}Connexion | Video Producer{% endblock %}
+{% block content %}
+
+{% get_current_language as CURRENT_LANG %}
+{% get_available_languages as LANGUAGES %}
+{% comment %} {% get_current_language as CURRENT_LANG %} {% endcomment %}
+<!-- Section Ce que nous faisons -->
+{% trans "African Support" %}
+<section class="py-5" id="expertise">
+    <div class="container py-5">
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <h6 class="text-primary fw-bold text-uppercase mb-3" style="letter-spacing: 5px;">Notre Expertise</h6>
+                <h2 class="display-4 fw-black text-white" style="font-family: 'Syncopate', sans-serif;">CE QUE <span class="text-primary">NOUS FAISONS</span></h2>
+            </div>
+            <div class="col-lg-6">
+    <!-- On ajoute border-primary et on épaissit la bordure avec border-4 -->
+    <p class="lead expertise-intro border-start border-4 ps-4">
+        Tourner en <span class="text-primary fw-bold">Afrique de l'Ouest</span> nécessite une connaissance profonde du terrain. 
+        <span class="text-primary fw-bold">KINÉRA</span> facilite vos productions au 
+        <span class="text-primary fw-bold">Bénin</span>, au <span class="text-primary fw-bold">Togo</span> 
+        et dans la sous-région en gérant toute la <span class="text-white fw-bold">complexité logistique</span>.
+    </p>
+     <p class="lead expertise-intro border-start border-4 ps-4">
+        Tourner en <span class="text-primary fw-bold">Afrique de l'Ouest</span> nécessite une connaissance profonde du terrain. 
+        <span class="text-primary fw-bold">KINÉRA</span> facilite vos productions au 
+        <span class="text-primary fw-bold">Bénin</span>, au <span class="text-primary fw-bold">Togo</span> 
+        et dans la sous-région en gérant toute la <span class="text-white fw-bold">complexité logistique</span>.
+    </p>
+</div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Service 1 : Administration -->
+            <div class="col-md-4">
+                <div class="expertise-card h-100">
+                    <div class="expertise-icon"><i class="bi bi-file-earmark-text"></i></div>
+                    <h4 class="fw-bold mb-3">Permis & Autorisations</h4>
+                    <p class="text-muted">Nous sécurisons vos tournages en gérant les accréditations presse, les permis de filmer nationaux et les autorisations spécifiques (Drones, sites historiques).</p>
+                    <ul class="list-unstyled text-warning small fw-bold">
+                        <li><i class="bi bi-check2-circle me-2"></i> Accréditations Gouvernementales</li>
+                        <li><i class="bi bi-check2-circle me-2"></i> Dédouanement (Carnet ATA)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Service 2 : Équipes -->
+            <div class="col-md-4">
+                <div class="expertise-card h-100">
+                    <div class="expertise-icon"><i class="bi bi-person-video3"></i></div>
+                    <h4 class="fw-bold mb-3">Fixeurs & Équipes</h4>
+                    <p class="text-muted">Accès à un réseau de techniciens locaux qualifiés (image, son, drone) et de fixeurs bilingues expérimentés pour accompagner vos équipes étrangères.</p>
+                    <ul class="list-unstyled text-warning small fw-bold">
+                        <li><i class="bi bi-check2-circle me-2"></i> Fixeurs Bilingues (Fr/En)</li>
+                        <li><i class="bi bi-check2-circle me-2"></i> Techniciens & Coordination</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Service 3 : Logistique -->
+            <div class="col-md-4">
+                <div class="expertise-card h-100">
+                    <div class="expertise-icon"><i class="bi bi-truck"></i></div>
+                    <h4 class="fw-bold mb-3">Logistique & Repérages</h4>
+                    <p class="text-muted">De la recherche des décors parfaits à la gestion des transports 4x4, de l'hébergement et de la sécurité des équipes sur le terrain.</p>
+                    <ul class="list-unstyled text-warning small fw-bold">
+                        <li><i class="bi bi-check2-circle me-2"></i> Repérage de Lieux (Scouting)</li>
+                        <li><i class="bi bi-check2-circle me-2"></i> Transport & Logistique 24/7</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="text-center mt-5">
+            <p class="text-white-50">Un projet spécifique en tête ? <a href="#contact" class="text-primary fw-bold text-decoration-none">Discutons de vos besoins de production →</a></p>
+        </div>
+    </div>
+</section>
+ <!-- Location Spotlight - Videos Section Single Video -->
+    <section class="py-5" id="videos-showcase">
+        <div class="container py-5">
+           
+            {% if portfolio_videos %}
+            <!-- Single Video Player -->
+            <div class="position-relative" style="background: #000; border-radius: 0.5rem; overflow: hidden; height: 500px;">
+                <video id="mainVideoPlayer" autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" class="d-block">
+                    <source src="{{ portfolio_videos.0.file.url }}" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo HTML5.
+                </video>
+            </div>
+            <script>
+                let currentIndex = 0;
+                let totalVideos = document.querySelectorAll('[id^="video-"]').length;
+                
+                function changeVideo(direction) {
+                    if (totalVideos === 0) return;
+                    
+                    currentIndex = (currentIndex + direction + totalVideos) % totalVideos;
+                    const videoData = document.getElementById(`video-${currentIndex}`);
+                    const player = document.getElementById('mainVideoPlayer');
+                    
+                    if (videoData && player) {
+                        player.src = videoData.dataset.src;
+                        player.play();
+                        document.getElementById('currentVideoIndex').textContent = currentIndex + 1;
+                        
+                        // Mise à jour des infos
+                        const titleElement = document.querySelector('#videos-showcase h4');
+                        if (titleElement) {
+                            titleElement.textContent = videoData.dataset.title;
+                        }
+                    }
+                }
+            </script>
+
+            {% else %}
+            <div class="alert alert-info text-center">
+                <p class="mb-0">Aucune vidéo dans le portfolio pour le moment.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <!-- Trusted By -->
+    <section class="py-5 bg-black">
+        <div class="container client-logos">
+            <div class="row align-items-center justify-content-center g-5 text-center">
+                <div class="col-4 col-md-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix"></div>
+                <div class="col-4 col-md-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="BBC"></div>
+                <div class="col-4 col-md-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="CNN"></div>
+                <div class="col-4 col-md-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Discovery"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Masonry -->
+    <section class="py-5" id="services">
+        <div class="container py-5">
+            <div class="row mb-5 align-items-end">
+                <div class="col-lg-6">
+                    <h2 class="display-3 fw-black text-uppercase">Unmatched<br><span style="color: var(--primary);">Expertise</span></h2>
+                </div>
+                <div class="col-lg-6 text-muted">
+                    <p class="fs-5">Nous ne sommes pas que des fixeurs. Nous sommes vos partenaires de production locaux garantissant une exécution impeccable de vos documentaires et longs-métrages.</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="glass-card">
+                        <i class="bi bi-camera-reels fs-1 text-warning mb-4"></i>
+                        <h4>Production Management</h4>
+                        <p class="text-muted small">Coordination technique, budgétisation et gestion d'équipes locales multilingues.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card">
+                        <i class="bi bi-geo-alt fs-1 text-warning mb-4"></i>
+                        <h4>Location Scouting</h4>
+                        <p class="text-muted small">Accès exclusif à des sites historiques et sauvages à travers le Bénin et le Togo.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="glass-card">
+                        <i class="bi bi-file-earmark-lock fs-1 text-warning mb-4"></i>
+                        <h4>Film Permits</h4>
+                        <p class="text-muted small">Accréditations gouvernementales et autorisations de tournage en un temps record.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Spotlight - Images Gallery Carousel -->
+    <section class="py-5 bg-black" id="gallery">
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h2 class="fw-bold text-uppercase mb-0" style="letter-spacing: 10px;">Our <span class="text-warning">Gallery</span></h2>
+                <a href="#" class="btn btn-outline-warning btn-sm">Voir Plus →</a>
+            </div>
+            
+            {% if portfolio_images %}
+            <!-- Images Carousel Multi-Items -->
+            <div class="gallery-carousel-wrapper">
+                <div class="gallery-carousel">
+                    {% for image in portfolio_images %}
+                    <div class="carousel-slide">
+                        <div class="position-relative overflow-hidden rounded shadow-lg" style="height: 350px;">
+                            <img src="{{ image.file.url }}" class="w-100 h-100" style="object-fit: cover;" alt="Gallery image">
+                            <div class="position-absolute bottom-0 start-0 p-3 w-100" style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.9));">
+                                <h6 class="fw-bold text-white mb-1">{{ image.project.title }}</h6>
+                                <p class="text-warning small text-uppercase fw-bold mb-0">Portfolio</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-btn carousel-btn-prev" onclick="scrollCarousel('gallery', -1)">❮</button>
+                <button class="carousel-btn carousel-btn-next" onclick="scrollCarousel('gallery', 1)">❯</button>
+            </div>
+            {% else %}
+            <div class="alert alert-info text-center">
+                <p class="mb-0">Aucune image dans la galerie pour le moment.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Location Spotlight - Videos Section Carousel -->
+    <section class="py-5" id="videos-showcase">
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h2 class="fw-bold text-uppercase mb-0" style="letter-spacing: 10px;">Our <span class="text-warning">Videos</span></h2>
+                <a href="#" class="btn btn-outline-warning btn-sm">Voir Plus →</a>
+            </div>
+            
+            {% if portfolio_videos %}
+            <!-- Videos Carousel Multi-Items -->
+            <div class="videos-carousel-wrapper">
+                <div class="videos-carousel">
+                    {% for video in portfolio_videos %}
+                    <div class="carousel-slide">
+                        <div class="position-relative overflow-hidden rounded shadow-lg" style="background: #000; height: 350px;">
+                            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" class="d-block">
+                                <source src="{{ video.file.url }}" type="video/mp4">
+                                Votre navigateur ne supporte pas la vidéo HTML5.
+                            </video>
+                            <div class="position-absolute bottom-0 start-0 p-3 w-100" style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.9));">
+                                <h6 class="fw-bold text-white mb-1">{{ video.project.title }}</h6>
+                                <p class="text-warning small text-uppercase fw-bold mb-0">Portfolio</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-btn carousel-btn-prev" onclick="scrollCarousel('videos', -1)">❮</button>
+                <button class="carousel-btn carousel-btn-next" onclick="scrollCarousel('videos', 1)">❯</button>
+            </div>
+            {% else %}
+            <div class="alert alert-info text-center">
+                <p class="mb-0">Aucune vidéo dans le portfolio pour le moment.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Style personnalisé pour les carousels multi-items -->
+    <style>
+        .gallery-carousel-wrapper,
+        .videos-carousel-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-carousel,
+        .videos-carousel {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 0.5rem 0;
+            scrollbar-width: none;
+        }
+
+        .gallery-carousel::-webkit-scrollbar,
+        .videos-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-slide {
+            flex: 0 0 calc(25% - 1.125rem);
+            min-width: 250px;
+        }
+
+        @media (max-width: 1200px) {
+            .carousel-slide {
+                flex: 0 0 calc(33.333% - 1rem);
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .carousel-slide {
+                flex: 0 0 calc(50% - 0.75rem);
+                min-width: 150px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .carousel-slide {
+                flex: 0 0 calc(100% - 0.5rem);
+                min-width: 100%;
+            }
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(238, 122, 13, 0.8);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(238, 122, 13, 1);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 15px rgba(238, 122, 13, 0.8);
+        }
+
+        .carousel-btn-prev {
+            left: 1rem;
+        }
+
+        .carousel-btn-next {
+            right: 1rem;
+        }
+    </style>
+
+    <!-- Script pour le défilement des carousels -->
+    <script>
+        function scrollCarousel(type, direction) {
+            const carouselElement = document.querySelector(`.${type}-carousel`);
+            if (!carouselElement) return;
+            
+            // Calculer la distance de scroll (largeur d'un slide + gap)
+            const slideWidth = carouselElement.querySelector('.carousel-slide')?.offsetWidth || 300;
+            const scrollAmount = (slideWidth + 24) * direction; // 24px est le gap
+            
+            carouselElement.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+
+        // Auto-scroll des carousels après 5 secondes
+        setInterval(() => {
+            scrollCarousel('gallery', 1);
+        }, 5000);
+
+        setInterval(() => {
+            scrollCarousel('videos', 1);
+        }, 6000);
+    </script>
+
+
+    <!-- Tech Kit Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h3 class="fw-bold mb-4">TECHNICAL KIT <span class="text-warning">RENTAL</span></h3>
+                    <div class="kit-item d-flex justify-content-between align-items-center">
+                        <span>Digital Cinema (Sony FX6, Red Komodo)</span>
+                        <i class="bi bi-plus-circle"></i>
+                    </div>
+                    <div class="kit-item d-flex justify-content-between align-items-center">
+                        <span>Aerial Cinematography (Mavic 3 Cine)</span>
+                        <i class="bi bi-plus-circle"></i>
+                    </div>
+                    <div class="kit-item d-flex justify-content-between align-items-center">
+                        <span>Wireless Audio & Monitoring</span>
+                        <i class="bi bi-plus-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="footer-cta text-center mt-5" id="contact">
+        <div class="container py-5">
+            <h2 class="display-4 fw-black text-uppercase mb-4">Ready to Shoot?</h2>
+            <p class="mb-5 fw-bold">Obtenez un devis gratuit pour votre prochaine production en Afrique.</p>
+            <a href="mailto:contact@kinerafilm.com" class="btn btn-dark btn-lg px-5 py-3 rounded-0 text-uppercase fw-black">Hire us now</a>
+        </div>
+    </section>
+{% endblock %}

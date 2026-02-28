@@ -1,0 +1,45 @@
+{% extends 'Admin/connexion/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Connexion | Video Producer{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <!-- Header -->
+        <div class="auth-header">
+            {% include 'Admin/connexion/includes/logo.html' %}
+            <h2 class="auth-title">Bon retour !</h2>
+            <p class="auth-subtitle">Connectez-vous pour accéder à votre espace.</p>
+        </div>
+
+        <!-- Formulaire de connexion -->
+        <form method="post" class="auth-form" novalidate>
+            {% csrf_token %}
+            <div class="form-fields">
+                {{ form|crispy }}
+            </div>
+
+            <div class="d-flex justify-content-end mb-3">
+                <a href="{% url 'account_reset_password' %}" class="forgot-link">
+                    <i class="bi bi-key me-1"></i> Mot de passe oublié ?
+                </a>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Se connecter
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p>Pas encore de compte ?
+                <a href="{% url 'inscription' %}">Créer un compte</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

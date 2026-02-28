@@ -1,0 +1,266 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Our Services | KINÉRA FILM FIXERS{% endblock %}
+
+{% block content %}
+<!-- Police Inter pour une lisibilité maximale -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        /* 1. MODIFIE ICI LES COULEURS DE TON LOGO */
+        --brand-color: #EA8808;      /* Couleur principale (Jaune/Or/Rouge...) */
+        --bg-deep: #0F1115;          /* Fond principal (Noir très profond) */
+        --bg-card: #1C1F26;          /* Fond des cartes (Gris foncé) */
+        --text-main: #E2E8F0;        /* Couleur du texte (Blanc cassé/Gris clair) */
+        --text-muted: #94A3B8;      /* Texte secondaire */
+    }
+
+    body {
+        background-color: var(--bg-deep);
+        color: var(--text-main);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    /* Hero Section */
+    .hero-header {
+        background: linear-gradient(rgba(8,8,8,0.8), rgba(8,8,8,1)), 
+                    url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        padding: 100px 0 60px 0;
+        text-align: center;
+    }
+
+    .hero-header h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--brand-color);
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        margin-bottom: 10px;
+    }
+
+    .hero-header p {
+        font-size: 1.3rem;
+        color: var(--text-main);
+        font-weight: 300;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* Container */
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Sections */
+    .section-padding { padding: 80px 0; }
+
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 40px;
+        color: var(--brand-color);
+    }
+
+    /* Intro Text */
+    .intro-box {
+        text-align: center;
+        max-width: 850px;
+        margin: 0 auto 60px auto;
+        font-size: 1.2rem;
+        color: var(--text-main);
+    }
+
+    /* Grid & Cards */
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    .service-card {
+        background-color: var(--bg-card);
+        padding: 40px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--brand-color);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: rgba(234, 179, 8, 0.1); /* Couleur du logo avec transparence */
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        color: var(--brand-color);
+    }
+
+    .service-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--text-main);
+    }
+
+    .service-card p {
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+
+    /* Country List */
+    .country-wrapper {
+        background-color: var(--bg-card);
+        padding: 50px;
+        border-radius: 20px;
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .country-tag {
+        display: inline-block;
+        border: 1px solid var(--brand-color);
+        color: var(--brand-color);
+        padding: 8px 20px;
+        margin: 6px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+
+    .country-tag:hover {
+        background: var(--brand-color);
+        color: var(--bg-deep);
+    }
+
+    /* CTA Button */
+    .cta-area {
+        text-align: center;
+        padding: 100px 0;
+    }
+
+    .btn-brand {
+        background-color: var(--brand-color);
+        color: var(--bg-deep) !important;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 18px 45px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    .btn-brand:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .hero-header h1 { font-size: 2.5rem; }
+    }
+</style>
+
+<header class="hero-header">
+    <div class="container">
+        <h1>Our Services</h1>
+        <p>Your Strategic Production Partner for Cinematic Excellence in Africa.</p>
+    </div>
+</header>
+
+<main class="container">
+    
+    <!-- WHAT WE DO -->
+    <section class="section-padding">
+        <div class="intro-box">
+            <h2 class="section-title">End-to-End Production Support</h2>
+            <p>
+                <strong>KINÉRA FILM FIXERS</strong> provides comprehensive support to international film, TV, and documentary productions across the African continent. We navigate the complexities so you can focus on the creative vision.
+            </p>
+        </div>
+
+        <div class="service-grid">
+            <!-- 1 -->
+            <div class="service-card">
+                <div class="icon-circle">🎥</div>
+                <h3>Film Fixing</h3>
+                <p>On-ground coordination, local crew recruitment, and seamless management of your daily production needs.</p>
+            </div>
+            <!-- 2 -->
+            <div class="service-card">
+                <div class="icon-circle">🗺️</div>
+                <h3>Location Scouting</h3>
+                <p>Discovery of unique landscapes and management of all filming permits and administrative clearances.</p>
+            </div>
+            <!-- 3 -->
+            <div class="service-card">
+                <div class="icon-circle">📦</div>
+                <h3>Logistics & Gear</h3>
+                <p>Customs clearance for equipment, secure transportation, storage, and specialized catering services.</p>
+            </div>
+            <!-- 4 -->
+            <div class="service-card">
+                <div class="icon-circle">🎭</div>
+                <h3>Casting & Talent</h3>
+                <p>Connecting you with professional local actors, extras, and specialized cultural consultants.</p>
+            </div>
+            <!-- 5 -->
+            <div class="service-card">
+                <div class="icon-circle">🎧</div>
+                <h3>Technical Crew</h3>
+                <p>Access to skilled multilingual technicians and translators to ensure flawless communication on set.</p>
+            </div>
+            <!-- 6 -->
+            <div class="service-card">
+                <div class="icon-circle">🛡️</div>
+                <h3>Safety & Security</h3>
+                <p>Detailed risk assessment and on-site security protocols tailored for high-stakes media environments.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COUNTRIES -->
+    <section class="country-wrapper">
+        <h3 style="margin-bottom: 30px; font-size: 1.8rem;">Our Country Coverage</h3>
+        <div class="d-flex flex-wrap justify-content-center">
+            <span class="country-tag">Benin</span>
+            <span class="country-tag">Togo</span>
+            <span class="country-tag">Chad</span>
+            <span class="country-tag">Burkina Faso</span>
+            <span class="country-tag">Djibouti</span>
+            <span class="country-tag">Kenya</span>
+            <span class="country-tag">Niger</span>
+            <span class="country-tag">Mali</span>
+            <span class="country-tag">Côte d’Ivoire</span>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-area">
+        <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Ready to start your next project?</h2>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem;">Let our experts handle the logistics of your African production.</p>
+        <a href="{% url 'contact' %}" class="btn-brand">Get a Quote Now</a>
+    </section>
+
+</main>
+{% endblock %}

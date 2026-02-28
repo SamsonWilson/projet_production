@@ -1,0 +1,243 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À Propos | KINÉRA FILM FIXERS</title>
+    
+    <!-- CSS (Bootstrap, Icons, Fonts) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Syncopate:wght@700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --primary: #EE7A0D;
+            --bg-deep: #080808;
+            --bg-card: #121212;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* --- Style Graffiti Logo --- */
+        .brand-graffiti {
+            font-size: 2.2rem !important; 
+            font-family: 'Permanent Marker', cursive !important;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
+            transform: rotate(-3deg);
+            transition: 0.3s;
+        }
+        .brand-graffiti span { color: white; text-shadow: 3px 3px 0px var(--primary); }
+        .brand-graffiti .dot-orange { color: var(--primary); font-size: 2.8rem; }
+
+        /* --- Header Section --- */
+        .about-header {
+            padding: 150px 0 80px;
+            background: linear-gradient(rgba(8,8,8,0.8), rgba(8,8,8,1)), url("{% static 'css/image/accueil.jpg' %}");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .section-title {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* --- Cards Style --- */
+        .vision-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-left: 4px solid var(--primary);
+            height: 100%;
+            transition: 0.3s;
+        }
+        .vision-card:hover { transform: translateY(-10px); background: #181818; }
+
+        /* --- Team Style --- */
+        .team-member {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        .team-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: 0.5s;
+        }
+        .team-member:hover .team-img { filter: grayscale(0%); transform: scale(1.05); }
+        .team-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .highlight-orange { color: var(--primary); font-weight: 700; }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top px-4" style="background: rgba(0,0,0,0.9); border-bottom: 1px solid rgba(238, 122, 13, 0.2);">
+        <div class="container">
+            <a class="brand-graffiti" href="/">
+                <span>KINÉRA</span><span class="dot-orange">.</span>
+            </a>
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list fs-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-uppercase small fw-bold">
+                    <li class="nav-item"><a class="nav-link px-3 text-white" href="/">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 text-white" href="/services/">Services</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#" style="color: var(--primary) !important;">À Propos</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 text-white border border-warning ms-lg-3" href="/contact/">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="about-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h6 class="text-primary fw-bold text-uppercase mb-3 animate__animated animate__fadeInLeft" style="letter-spacing: 5px;">Notre Histoire</h6>
+                    <h1 class="display-3 section-title animate__animated animate__fadeInUp">L'Excellence du <span class="text-primary">Terrain</span></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Qui sommes-nous -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <img src="{% static 'css/image/about-thumb.jpg' %}" alt="Kinéra Team" class="img-fluid rounded-4 shadow-lg">
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="section-title mb-4">Votre Partenaire de <span class="text-primary">Confiance</span></h2>
+                    <p class="lead text-white-50">
+                        Basée à Cotonou, <span class="highlight-orange">KINÉRA FILM FIXERS</span> est née d'une passion pour le storytelling et d'une connaissance sans faille du terrain ouest-africain.
+                    </p>
+                    <p class="text-muted">
+                        Nous comprenons que produire en Afrique peut sembler complexe. C'est pourquoi nous avons bâti un réseau solide pour offrir aux cinéastes, journalistes et marques internationales une plateforme de production fluide, sécurisée et de haute qualité.
+                    </p>
+                    <div class="mt-4 d-flex gap-4">
+                        <div>
+                            <h3 class="text-primary fw-bold mb-0">12+</h3>
+                            <small class="text-uppercase opacity-50">Années d'Expérience</small>
+                        </div>
+                        <div>
+                            <h3 class="text-primary fw-bold mb-0">150+</h3>
+                            <small class="text-uppercase opacity-50">Projets Fixés</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notre Vision / Mission -->
+    <section class="py-5 bg-black">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="vision-card">
+                        <i class="bi bi-eye fs-1 text-primary mb-3"></i>
+                        <h4 class="fw-bold">Notre Vision</h4>
+                        <p class="text-muted small">Devenir le hub de production incontournable en Afrique de l'Ouest, alliant standards internationaux et authenticité locale.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="vision-card">
+                        <i class="bi bi-rocket-takeoff fs-1 text-primary mb-3"></i>
+                        <h4 class="fw-bold">Notre Mission</h4>
+                        <p class="text-muted small">Éliminer les barrières logistiques pour permettre aux créateurs de se concentrer exclusivement sur leur vision artistique.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="vision-card">
+                        <i class="bi bi-heart fs-1 text-primary mb-3"></i>
+                        <h4 class="fw-bold">Nos Valeurs</h4>
+                        <p class="text-muted small">Transparence totale, réactivité 24/7 et un respect profond pour les cultures et les territoires que nous explorons.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Équipe (Optionnel) -->
+    <section class="py-5">
+        <div class="container py-5">
+            <h2 class="section-title text-center mb-5">Le <span class="text-primary">Crew</span></h2>
+            <div class="row g-4">
+                <!-- Membre 1 -->
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="{% static 'css/image/capture.png' %}" class="team-img" alt="Directeur">
+                        <div class="team-info">
+                            <h5 class="fw-bold mb-0">Amaya Doe</h5>
+                            <p class="text-primary small mb-0">Directrice de Production</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Membre 2 -->
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="{% static 'css/image/services.jpg' %}" class="team-img" alt="Fixer">
+                        <div class="team-info">
+                            <h5 class="fw-bold mb-0">Olivier K.</h5>
+                            <p class="text-primary small mb-0">Fixeur Lead / Logistique</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Membre 3 -->
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="{% static 'css/image/about-thumb.jpg' %}" class="team-img" alt="Scout">
+                        <div class="team-info">
+                            <h5 class="fw-bold mb-0">Sylvie A.</h5>
+                            <p class="text-primary small mb-0">Repérage & Permis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="py-5 text-center">
+        <div class="container py-5 border-top border-secondary">
+            <h2 class="section-title mb-4">Prêt à <span class="text-primary">Tourner</span> ?</h2>
+            <p class="mb-5 text-muted">Rejoignez les dizaines de productions qui nous font confiance chaque année.</p>
+            <a href="/contact/" class="btn btn-warning px-5 py-3 fw-bold rounded-0 text-uppercase" style="background: var(--primary); border:none;">Travaillons Ensemble</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center border-top border-secondary opacity-50">
+        <p class="small mb-0">© 2025 KINÉRA FILM FIXERS. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

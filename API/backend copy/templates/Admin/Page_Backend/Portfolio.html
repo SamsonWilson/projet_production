@@ -1,0 +1,135 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block title %}{{ title|default:"Nouveau Projet Portfolio" }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3 fw-bold text-white">
+                <i class="bi bi-images"></i>
+                {{ title|default:"Créer un Projet" }}
+            </h1>
+        </div>
+        <!-- <div class="col-md-4 text-end">
+            <a href="#" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div> -->
+    </div>
+
+    <!-- Carte -->
+    <div class="card bg-dark border-secondary">
+        <div class="card-body">
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Erreurs globales -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <!-- Titre -->
+                <div class="mb-3">
+                    <label class="form-label text-white">
+                        {{ form.title.label }}
+                    </label>
+                    {{ form.title }}
+                    <div class="text-danger small">
+                        {{ form.title.errors }}
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label class="form-label text-white">
+                        {{ form.description.label }}
+                    </label>
+                    {{ form.description }}
+                    <div class="text-danger small">
+                        {{ form.description.errors }}
+                    </div>
+                </div>
+
+                <!-- Type + Catégorie -->
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label text-white">
+                            {{ form.project_type.label }}
+                        </label>
+                        {{ form.project_type }}
+                        <div class="text-danger small">
+                            {{ form.project_type.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-white">
+                            {{ form.category.label }}
+                        </label>
+                        {{ form.category }}
+                        <div class="text-danger small">
+                            {{ form.category.errors }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Mise en avant -->
+                <div class="mb-3">
+                    <div class="form-check">
+                        {{ form.is_featured }}
+                        <label class="form-check-label text-white ms-2">
+                            {{ form.is_featured.label }}
+                        </label>
+                    </div>
+                    <div class="text-danger small">
+                        {{ form.is_featured.errors }}
+                    </div>
+                </div>
+
+                <!-- Bouton -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-check-lg"></i>
+                        Enregistrer
+                    </button>
+
+                    <a href="#" class="btn btn-secondary btn-lg">
+                        Annuler
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Style dark -->
+<style>
+.form-control, .form-select {
+    background-color: #111;
+    border-color: #444;
+    color: #fff;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #111;
+    border-color: #EE7A0D;
+    color: #fff;
+}
+
+.form-label {
+    color: #fff;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,482 @@
+{% extends 'Admin/Page_Backend/base.html' %} 
+{% load static %} 
+{% load crispy_forms_tags %}  
+
+{% block title %}Tableau de Bord | KINÉRA FILM FIXERS{% endblock %}  
+
+{% block content %} 
+<div class="content-wrapper">
+    <!-- Top Bar / Header Section -->
+    <div class="dashboard-header">
+        <div class="header-left">
+            <span class="date-badge" id="currentDate"></span>
+            <h1>Tableau de Bord <span class="text-gradient">Admin</span></h1>
+            <p class="subtitle">Gestion de la production et des contenus</p>
+        </div>
+        <div class="header-right">
+            <div class="user-profile-pill">
+                <div class="avatar-circle">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+                <div class="user-info">
+                    <span class="u-name">{{ user.username }}</span>
+                    <span class="u-role">Administrateur</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon icon-projects"><i class="bi bi-film"></i></div>
+            <div class="stat-info">
+                <p class="stat-label">Projets Actifs</p>
+                <h3 class="stat-value">24</h3>
+            </div>
+            <div class="stat-trend positive">+12%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-services"><i class="bi bi-briefcase"></i></div>
+            <div class="stat-info">
+                <p class="stat-label">Services</p>
+                <h3 class="stat-value">12</h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-users"><i class="bi bi-people"></i></div>
+            <div class="stat-info">
+                <p class="stat-label">Utilisateurs</p>
+                <h3 class="stat-value">158</h3>
+            </div>
+            <div class="stat-trend positive">+5</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-messages"><i class="bi bi-chat-dots"></i></div>
+            <div class="stat-info">
+                <p class="stat-label">Messages</p>
+                <h3 class="stat-value">09</h3>
+            </div>
+            <div class="stat-trend alert">Nouveau</div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+        <div class="section-header">
+            <h2 class="section-title"><i class="bi bi-graph-up-arrow"></i> Analyses de Performance</h2>
+        </div>
+        <div class="charts-grid">
+            <div class="chart-container main-chart">
+                <div class="chart-header">
+                    <h3>Activités de Production</h3>
+                    <select class="chart-select">
+                        <option>7 derniers jours</option>
+                        <option>30 derniers jours</option>
+                    </select>
+                </div>
+                <canvas id="lineChart"></canvas>
+            </div>
+            <div class="chart-container side-chart">
+                <div class="chart-header">
+                    <h3>Répartition Services</h3>
+                </div>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Center -->
+    <div class="management-section">
+        <h2 class="section-title"><i class="bi bi-layers"></i> Centre de Gestion</h2>
+        <div class="actions-grid">
+            <!-- Portfolio -->
+            <div class="action-card">
+                <div class="card-accent" style="background: #EE7A0D;"></div>
+                <div class="card-body">
+                    <i class="bi bi-images card-icon"></i>
+                    <h3>Portfolio</h3>
+                    <p>Mettez à jour vos dernières productions cinématographiques.</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn-action main">Gérer</a>
+                        <a href="#" class="btn-action icon"><i class="bi bi-plus"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="action-card">
+                <div class="card-accent" style="background: #3b82f6;"></div>
+                <div class="card-body">
+                    <i class="bi bi-envelope-paper card-icon"></i>
+                    <h3>Messages</h3>
+                    <p>Répondez aux demandes de tournage et fixers.</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn-action main">Inbox</a>
+                        <span class="badge-count">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="action-card">
+                <div class="card-accent" style="background: #22c55e;"></div>
+                <div class="card-body">
+                    <i class="bi bi-gear-wide-connected card-icon"></i>
+                    <h3>Services</h3>
+                    <p>Configurez vos offres de logistique et matériel.</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn-action main">Modifier</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="action-card">
+                <div class="card-accent" style="background: #a855f7;"></div>
+                <div class="card-body">
+                    <i class="bi bi-sliders card-icon"></i>
+                    <h3>Paramètres</h3>
+                    <p>Configuration globale du site et sécurité.</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn-action main">Réglages</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Access Float -->
+    <div class="quick-access-bar">
+        <a href="/" target="_blank" title="Voir le site"><i class="bi bi-globe"></i></a>
+        <a href="#" title="Aide"><i class="bi bi-question-circle"></i></a>
+        <a href="{% url 'deconnexion' %}" class="logout-link" title="Déconnexion"><i class="bi bi-power"></i></a>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary: #EE7A0D;
+        --primary-glow: rgba(238, 122, 13, 0.3);
+        --bg-dark: #0a0a0f;
+        --card-bg: rgba(22, 22, 31, 0.8);
+        --text-main: #f1f5f9;
+        --text-muted: #8892a4;
+        --border-color: rgba(255, 255, 255, 0.08);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .content-wrapper {
+        background-color: var(--bg-dark);
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(238, 122, 13, 0.05) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
+        min-height: 100vh;
+        padding: 2.5rem;
+        color: var(--text-main);
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Header Styling */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 3rem;
+    }
+
+    .text-gradient {
+        background: linear-gradient(to right, var(--primary), #ff9d42);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .date-badge {
+        background: rgba(238, 122, 13, 0.1);
+        color: var(--primary);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    .dashboard-header h1 {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 2.2rem;
+        margin: 0;
+        letter-spacing: -1px;
+    }
+
+    /* User Profile Pill */
+    .user-profile-pill {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 8px 20px 8px 8px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .u-name { display: block; font-size: 0.9rem; font-weight: 600; }
+    .u-role { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Stats Cards */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-glow);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .stat-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        background: rgba(255,255,255,0.03);
+    }
+
+    .icon-projects { color: var(--primary); }
+    .icon-services { color: #22c55e; }
+    .icon-users { color: #3b82f6; }
+    .icon-messages { color: #a855f7; }
+
+    .stat-value { font-size: 1.8rem; font-weight: 700; margin: 0; }
+    .stat-label { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+
+    .stat-trend {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+
+    .stat-trend.positive { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+    .stat-trend.alert { background: rgba(238, 122, 13, 0.1); color: var(--primary); }
+
+    /* Charts */
+    .charts-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .chart-container {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 1.5rem;
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+    }
+
+    .chart-select {
+        background: rgba(255,255,255,0.05);
+        border: none;
+        color: var(--text-main);
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border-radius: 8px;
+    }
+
+    /* Action Cards */
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .action-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+
+    .action-card:hover {
+        border-color: rgba(255,255,255,0.2);
+        background: rgba(30, 30, 45, 0.9);
+    }
+
+    .card-accent {
+        height: 4px;
+        width: 100%;
+    }
+
+    .card-body { padding: 2rem; }
+    .card-icon { font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem; display: block; }
+    .action-card h3 { margin-bottom: 0.75rem; font-size: 1.2rem; }
+    .action-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; }
+
+    .card-footer { display: flex; gap: 10px; align-items: center; }
+
+    .btn-action {
+        text-decoration: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .btn-action.main {
+        background: rgba(255,255,255,0.05);
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+    }
+
+    .btn-action.main:hover {
+        background: var(--primary);
+        color: #000;
+    }
+
+    .badge-count {
+        background: #ef4444;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+    }
+
+    /* Quick Access Bar */
+    .quick-access-bar {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(22, 22, 31, 0.9);
+        backdrop-filter: blur(15px);
+        padding: 10px 25px;
+        border-radius: 100px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        gap: 25px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        z-index: 1000;
+    }
+
+    .quick-access-bar a {
+        color: var(--text-muted);
+        font-size: 1.3rem;
+        transition: var(--transition);
+    }
+
+    .quick-access-bar a:hover { color: var(--primary); transform: scale(1.2); }
+    .quick-access-bar .logout-link:hover { color: #ef4444; }
+
+    @media (max-width: 992px) {
+        .charts-grid { grid-template-columns: 1fr; }
+        .dashboard-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+<script>
+    // Date dynamique
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('currentDate').innerText = new Date().toLocaleDateString('fr-FR', options);
+
+    // Chart.js Configuration
+    Chart.defaults.color = '#8892a4';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    // Line Chart
+    const lineCtx = document.getElementById('lineChart')?.getContext('2d');
+    const gradient = lineCtx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(238, 122, 13, 0.2)');
+    gradient.addColorStop(1, 'rgba(238, 122, 13, 0)');
+
+    new Chart(lineCtx, {
+        type: 'line',
+        data: {
+            labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            datasets: [{
+                label: 'Vues site',
+                data: [65, 78, 56, 89, 120, 150, 140],
+                borderColor: '#EE7A0D',
+                borderWidth: 3,
+                fill: true,
+                backgroundColor: gradient,
+                tension: 0.4,
+                pointRadius: 0,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Pie Chart
+    const pieCtx = document.getElementById('pieChart')?.getContext('2d');
+    new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Films', 'Pub', 'Docu'],
+            datasets: [{
+                data: [45, 25, 30],
+                backgroundColor: ['#EE7A0D', '#3b82f6', '#22c55e'],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            cutout: '75%',
+            plugins: {
+                legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+            }
+        }
+    });
+</script>
+{% endblock %}

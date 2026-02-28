@@ -1,0 +1,144 @@
+[32midle-python3.13[0m/kali-rolling 3.13.11-1 all
+  IDE for Python (v3.13) using Tkinter
+
+[32midle-python3.14[0m/kali-rolling 3.14.3-1 all
+  IDE for Python (v3.14) using Tkinter
+
+[32mlibfungw-python3-1[0m/kali-rolling 1.2.2-1 amd64
+  Scripting support for fungw: python3
+
+[32mlibpython3-all-dbg[0m/kali-rolling 3.13.7-1+b1 amd64
+  package depending on all supported Python 3 debugging packages
+
+[32mlibpython3-all-dev[0m/kali-rolling 3.13.7-1+b1 amd64
+  package depending on all supported Python 3 development packages
+
+[32mlibpython3-dbg[0m/kali-rolling 3.13.7-1+b1 amd64
+  debug build of the Python 3 Interpreter (version 3.13)
+
+[32mlibpython3.13[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Shared Python runtime library (version 3.13)
+
+[32mlibpython3.13-dbg[0m/kali-rolling 3.13.11-1+b1 amd64
+  Debug Build of the Python Interpreter (version 3.13)
+
+[32mlibpython3.13-dev[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Header files and a static library for Python (v3.13)
+
+[32mlibpython3.13-minimal[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Minimal subset of the Python language (version 3.13)
+
+[32mlibpython3.13-stdlib[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Interactive high-level object-oriented language (standard library, version 3.13)
+
+[32mlibpython3.13-testsuite[0m/kali-rolling 3.13.11-1 all
+  Testsuite for the Python standard library (v3.13)
+
+[32mlibpython3.14[0m/kali-rolling 3.14.3-1 amd64
+  Shared Python runtime library (version 3.14)
+
+[32mlibpython3.14-dbg[0m/kali-rolling 3.14.3-1 amd64
+  Debug Build of the Python Interpreter (version 3.14)
+
+[32mlibpython3.14-dev[0m/kali-rolling 3.14.3-1 amd64
+  Header files and a static library for Python (v3.14)
+
+[32mlibpython3.14-minimal[0m/kali-rolling 3.14.3-1 amd64
+  Minimal subset of the Python language (version 3.14)
+
+[32mlibpython3.14-stdlib[0m/kali-rolling 3.14.3-1 amd64
+  Interactive high-level object-oriented language (standard library, version 3.14)
+
+[32mlibpython3.14-testsuite[0m/kali-rolling 3.14.3-1 all
+  Testsuite for the Python standard library (v3.14)
+
+[32mpostgresql-plpython3-18[0m/kali-rolling 18.1-2 amd64
+  PL/Python 3 procedural language for PostgreSQL 18
+
+[32mpython3-all[0m/kali-rolling 3.13.7-1+b1 amd64
+  package depending on all supported Python 3 runtime versions
+
+[32mpython3-all-dbg[0m/kali-rolling 3.13.7-1+b1 amd64
+  package depending on all supported Python 3 debugging packages
+
+[32mpython3-all-dev[0m/kali-rolling 3.13.7-1+b1 amd64
+  package depending on all supported Python 3 development packages
+
+[32mpython3-all-venv[0m/kali-rolling 3.13.7-1+b1 amd64
+  package depending on all supported Python 3 venv modules
+
+[32mpython3-dbg[0m/kali-rolling 3.13.7-1+b1 amd64
+  debug build of the Python 3 Interpreter (version 3.13)
+
+[32mpython3-flake8-2020[0m/kali-rolling 1.8.1-2 all
+  flake8 checks for misuse of sys.version or sys.version_info
+
+[32mpython3-minimal[0m/kali-rolling,now 3.13.7-1+b1 amd64 [installed,automatic]
+  minimal subset of the Python language (default python3 version)
+
+[32mpython3.13[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Interactive high-level object-oriented language (version 3.13)
+
+[32mpython3.13-dbg[0m/kali-rolling 3.13.11-1+b1 amd64
+  Debug Build of the Python Interpreter (version 3.13)
+
+[32mpython3.13-dev[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Header files and a static library for Python (v3.13)
+
+[32mpython3.13-doc[0m/kali-rolling 3.13.11-1 all
+  Documentation for the high-level object-oriented language Python (v3.13)
+
+[32mpython3.13-examples[0m/kali-rolling 3.13.11-1 all
+  Examples for the Python language (v3.13)
+
+[32mpython3.13-full[0m/kali-rolling 3.13.11-1+b1 amd64
+  Python Interpreter with complete class library (version 3.13)
+
+[32mpython3.13-gdbm[0m/kali-rolling 3.13.11-1+b1 amd64
+  GNU dbm database support for Python (v3.13)
+
+[32mpython3.13-minimal[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Minimal subset of the Python language (version 3.13)
+
+[32mpython3.13-nopie[0m/kali-rolling 3.13.11-1+b1 amd64
+  Python interpreter linked without PIE (version 3.13)
+
+[32mpython3.13-tk[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Tkinter - Writing Tk applications with Python (v3.13)
+
+[32mpython3.13-venv[0m/kali-rolling 3.13.11-1+b1 amd64 [upgradable from: 3.13.9-1]
+  Interactive high-level object-oriented language (pyvenv binary, version 3.13)
+
+[32mpython3.14[0m/kali-rolling 3.14.3-1 amd64
+  Interactive high-level object-oriented language (version 3.14)
+
+[32mpython3.14-dbg[0m/kali-rolling 3.14.3-1 amd64
+  Debug Build of the Python Interpreter (version 3.14)
+
+[32mpython3.14-dev[0m/kali-rolling 3.14.3-1 amd64
+  Header files and a static library for Python (v3.14)
+
+[32mpython3.14-doc[0m/kali-rolling 3.14.3-1 all
+  Documentation for the high-level object-oriented language Python (v3.14)
+
+[32mpython3.14-examples[0m/kali-rolling 3.14.3-1 all
+  Examples for the Python language (v3.14)
+
+[32mpython3.14-full[0m/kali-rolling 3.14.3-1 amd64
+  Python Interpreter with complete class library (version 3.14)
+
+[32mpython3.14-gdbm[0m/kali-rolling 3.14.3-1 amd64
+  GNU dbm database support for Python (v3.14)
+
+[32mpython3.14-minimal[0m/kali-rolling 3.14.3-1 amd64
+  Minimal subset of the Python language (version 3.14)
+
+[32mpython3.14-nopie[0m/kali-rolling 3.14.3-1 amd64
+  Python interpreter linked without PIE (version 3.14)
+
+[32mpython3.14-tk[0m/kali-rolling 3.14.3-1 amd64
+  Tkinter - Writing Tk applications with Python (v3.14)
+
+[32mpython3.14-venv[0m/kali-rolling 3.14.3-1 amd64
+  Interactive high-level object-oriented language (pyvenv binary, version 3.14)
+

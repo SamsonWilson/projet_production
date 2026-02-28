@@ -1,0 +1,527 @@
+
+{% load static %}
+{% load i18n %}
+{% get_current_language as CURRENT_LANG %}
+<!DOCTYPE html>
+<html lang="{{ CURRENT_LANG }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}KINÉRA | African Film Excellence{% endblock %}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #EE7A0D;
+            --bg-deep: #080808;
+            --bg-card: #121212;
+            --accent-gradient: linear-gradient(45deg, #EE7A0D, #ff9d42);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* --- Style de la Navbar --- */
+        .brand-graffiti {
+            /* Taille beaucoup plus grande */
+            font-size: 2.8rem !important; 
+            font-family: 'Permanent Marker', cursive !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            /* Inclinaison pour l'effet tagué à la main */
+            transform: rotate(-3deg) skew(-5deg);
+            transition: 0.3s ease;
+            padding: 10px 0;
+        }
+
+        .brand-graffiti .text-white {
+            color: #ffffff;
+            /* Ombre portée pour donner du relief (style graffiti 3D) */
+            text-shadow: 4px 4px 0px var(--primary);
+            -webkit-text-stroke: 1px rgba(0,0,0,0.5); /* Contour fin noir */
+        }
+
+        .brand-graffiti .dot-orange {
+            color: var(--primary);
+            font-size: 3.5rem;
+            /* Effet de "goutte" de peinture sur le point */
+            text-shadow: 2px 2px 10px rgba(238, 122, 13, 0.8);
+        }
+
+        /* Animation au survol */
+        .brand-graffiti:hover {
+            transform: rotate(0deg) scale(1.1);
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        /* Ajustement pour mobile pour ne pas que ce soit trop gros */
+        @media (max-width: 768px) {
+            .brand-graffiti {
+                font-size: 2rem !important;
+            }
+        }
+        /* 1. Le Logo */
+        .brand-text {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .brand-dot {
+            color: var(--primary); /* L'orange du logo */
+            font-size: 1.5rem;
+        }
+        .navbar-brand:hover .brand-text {
+            color: var(--primary); /* Le texte devient orange au survol */
+        }
+
+        /* 2. Les Liens de navigation */
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important; /* Blanc cassé par défaut */
+            position: relative;
+            transition: 0.3s ease;
+        }
+
+        /* Effet au survol (Couleur Logo) */
+        .navbar-nav .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        /* Petite ligne orange sous le lien au survol */
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 5px;
+            left: 50%;
+            background-color: var(--primary);
+            transition: 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .navbar-nav .nav-link:hover::after {
+            width: 20px;
+        }
+
+        /* 3. Bouton Contact spécial */
+        .btn-nav-contact {
+            border: 1px solid var(--primary) !important;
+            color: var(--primary) !important;
+            border-radius: 0; /* Look carré cinéma */
+            transition: 0.4s !important;
+        }
+        .btn-nav-contact:hover {
+            background-color: var(--primary) !important;
+            color: white !important;
+        }
+
+        /* 4. Navbar au scroll (Déjà dans votre code, on l'affine) */
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.95) !important;
+            padding: 12px 0 !important;
+            border-bottom: 2px solid var(--primary); /* Ligne fine orange en bas au scroll */
+        }
+
+        /* --- Hero Section Cinematic --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-video-bg {
+            position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;
+            z-index: -2; opacity: 0.5; transform: scale(1.1);
+        }
+        .hero-overlay {
+            position: absolute; inset:0; 
+            background: linear-gradient(0deg, var(--bg-deep) 5%, transparent 100%);
+            z-index: -1;
+        }
+        .hero-content h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 6rem);
+            line-height: 0.9;
+            text-transform: uppercase;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+            transition: 0.5s;
+        }
+        .hero-content h1 span { color: white; -webkit-text-stroke: 0; }
+        .hero-content h1:hover { -webkit-text-stroke: 1px var(--primary); }
+
+        /* --- Section Logos "Trusted By" --- */
+        .client-logos img {
+            filter: grayscale(1) brightness(2);
+            opacity: 0.5;
+            max-height: 40px;
+            transition: 0.3s;
+        }
+        .client-logos img:hover { filter: grayscale(0); opacity: 1; }
+
+        /* --- Glass Cards --- */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            height: 100%;
+            transition: 0.4s;
+        }
+        .glass-card:hover {
+            border-color: var(--primary);
+            background: rgba(238, 122, 13, 0.02);
+            transform: translateY(-10px);
+        }
+
+        /* --- Location Spotlight (Nouveau) --- */
+        .loc-img {
+            height: 400px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            filter: saturate(0.8);
+            transition: 0.6s;
+        }
+        .loc-card:hover .loc-img { filter: saturate(1.2); transform: scale(1.02); }
+
+        /* --- WhatsApp LEFT Fix --- */
+        .wa-float {
+            position: fixed;
+            top: 50%;            /* On le place à 50% de la hauteur */
+            left: 1% ;             /* Collé au bord gauche */
+            transform: translateY(-20%); /* Centrage vertical parfait selon sa propre hauteur */
+            z-index: 9999;
+            background: #E29607;
+            color: white;
+            padding: 12px 20px 12px 15px; /* Un peu plus d'espace à droite */
+            border-radius: 50px 50px 50px 50px; /* Arrondi uniquement à droite pour l'effet "onglet" */
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .wa-float:hover {
+            padding-left: 25px;   /* Le bouton sort un peu plus au survol */
+            color: white;
+            background: #20ba5a;
+            box-shadow: 8px 0 20px rgba(37, 211, 102, 0.4);
+        }
+        @keyframes pulse-wa {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .wa-float {
+            animation: pulse-wa 2s infinite;
+        }
+        .wa-badge {
+            position: absolute; top: -5px; right: -5px;
+            background: var(--primary); width: 15px; height: 15px;
+            border-radius: 50%; border: 2px solid white;
+        }
+
+        /* --- Kit Section (Nouveau) --- */
+        .kit-item { border-bottom: 1px solid #222; padding: 20px 0; }
+        .kit-item:hover { color: var(--primary); }
+
+        /* --- Footer --- */
+        .footer-cta {
+            background: var(--accent-gradient);
+            padding: 80px 0;
+            border-radius: 40px 40px 0 0;
+            color: black;
+        }
+        .hero-cinematic {
+            position: relative;
+            width: 100%;      /* Toute la largeur */
+            height: 60vh;     /* Hauteur réduite (60% de l'écran au lieu de 100%) */
+            min-height: 350px;
+            overflow: hidden;
+            background-color: #000; /* Fond noir pour le look cinéma */
+                }
+
+        .hero-cinematic video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Important : remplit toute la largeur sans déformer */
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            opacity: 0.7; /* Légère transparence pour le look premium */
+        }
+
+        .hero-cinematic .overlay-content {
+            position: relative;
+            z-index: 2; /* Passe au dessus de la vidéo */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(63, 60, 60, 0.3), rgba(8,8,8,1)); /* Fondu vers le contenu suivant */
+        }
+
+        /* Ajustement pour mobile */
+        @media (max-width: 768px) {
+            .hero-cinematic {
+                height: 40vh; /* Encore plus petit sur mobile pour l'ergonomie */
+            }
+        }
+        /*Section Ce que nous faisons */
+        .expertise-card {
+            background: #111; /* Fond sombre pour le look cinéma */
+            padding: 40px;
+            border-radius: 0;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+        }
+
+        .expertise-card:hover {
+            background: #181818;
+            border-color: var(--primary); /* L'orange de votre marque */
+            transform: translateY(-10px);
+        }
+
+        .expertise-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        .expertise-card h4 {
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .expertise-card ul li {
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+        .expertise-intro {
+            /* Couleur du texte principal en blanc brillant pour le contraste */
+            color: #ffffff !important; 
+            font-size: 1.25rem;
+            line-height: 1.6;
+            /* Couleur de la bordure gauche (couleur du logo) */
+            border-color: var(--primary) !important;
+            /* Un léger dégradé de fond pour faire ressortir le bloc */
+            background: linear-gradient(to right, rgba(238, 122, 13, 0.05), transparent);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        /* On s'assure que le texte orange est bien celui du logo */
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        /* partie Logo*/
+
+        /* Container du logo pour l'effet d'inclinaison */
+        .brand-logo-container {
+            display: inline-block;
+            padding: 5px 0;
+            transition: 0.3s ease;
+            /* On garde l'inclinaison graffiti pour le logo aussi */
+            transform: rotate(-3deg); 
+        }
+
+        /* Style de l'image du logo */
+        .nav-logo {
+            height: 200px;    /* Ajuste la hauteur selon tes besoins */
+            width: auto;     /* Garde les proportions */
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5)); /* Ombre légère */
+            transition: 0.3s ease;
+        }
+
+        /* Effet au survol du logo */
+        .brand-logo-container:hover {
+            transform: rotate(0deg) scale(1.65); /* Il se remet droit et grossit */
+        }
+
+        .brand-logo-container:hover .nav-logo {
+            /* Ajoute une lueur orange autour du logo au survol */
+            filter: drop-shadow(0 0 10px var(--primary)); 
+        }
+
+        /* Ajustement pour la navbar au scroll */
+        .navbar.scrolled .nav-logo {
+            height: 100px; /* Le logo rétrécit légèrement quand on scroll */
+        }
+
+        /* Ajustement Mobile */
+        @media (max-width: 768px) {
+            .nav-logo {
+                height: 40px;
+            }
+        }
+
+
+        /* Pour la langue */
+        /* Style du Dropdown de langue */
+        .dropdown-menu-dark .dropdown-item {
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .dropdown-menu-dark .dropdown-item:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .dropdown-item.active {
+            background-color: transparent !important;
+            color: var(--primary) !important;
+        }
+
+        /* Enlever la flèche par défaut si tu veux un look plus épuré */
+        .dropdown-toggle::after {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Curseur WhatsApp au Centre -->
+<a href="https://wa.me/+22890140998" class="wa-float">
+    <i class="bi bi-whatsapp fs-4"></i>
+    <span class="text-uppercase" style="font-size: 13px; letter-spacing: 1px;">Contact KINÉRA</span>
+</a>
+
+    <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+        <!-- Logo Textuel Style Cinéma -->
+        <a class="navbar-brand brand-logo-container" href="#home">
+            <img src="{% static 'css/image/LOGO_KINERA_FILM_FIXERS.png' %}"  alt="KINÉRA" class="nav-logo">
+        </a>
+        <!-- Bouton Mobile -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <i class="bi bi-list fs-1 text-primary"></i> <!-- Icone en Orange -->
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto text-uppercase small fw-bold align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="{% url 'dashboard' %}">{% trans "Accueil" %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="{% url 'services' %}">
+                        {% trans "Services" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="{% url 'about' %}">About</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link px-3" href="{% url 'portfolio' %}">Portfolio</a>
+                </li>
+                <!-- Bouton Contact mis en valeur -->
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="{% url 'contact' %}">Contact</a>
+                </li>
+                {% get_available_languages as LANGUAGES %}
+                {% get_current_language as CURRENT_LANG %}
+                <li class="nav-item dropdown px-3">
+                    <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-globe2 me-1"></i>
+                        {{ CURRENT_LANG|upper }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" style="background: rgba(0,0,0,0.9); border: 1px solid var(--primary);">
+                        {% for lang in LANGUAGES %}
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.path }}">
+                                    <input name="language" type="hidden" value="{{ lang.0 }}">
+                                    <button type="submit" class="dropdown-item {% if CURRENT_LANG == lang.0 %}active{% endif %}">
+                                        {{ lang.1 }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+    <!-- Hero -->
+    <!-- Remplacez votre section Hero par celle-ci pour un look "Boîte Vidéo" -->
+<!-- Section Héro Pleine Largeur -->
+<section class="hero-cinematic" id="home">
+    <!-- La vidéo -->
+     {% if videos %}
+    <video autoplay muted loop playsinline class="hero-video-bg">
+        <source src="{{ videos.0.video_file.url }}" type="video/mp4">
+    </video>
+    {% endif %}
+   
+    <!-- <video autoplay muted loop playsinline>
+        <source src="{% static 'css/videos/HYUNDAI_Kinera_film (1).mp4' %}" type="video/mp4">
+    </video> -->
+    <!-- Le contenu par-dessus -->
+    <div class="overlay-content text-center">
+        <div class="container">
+            <h6 class="text-uppercase fw-bold text-warning mb-3 animate__animated animate__fadeInDown" style="letter-spacing: 8px; font-size: 0.8rem;">
+                African Support
+            </h6>
+            <h1 class="display-2 fw-black text-white mb-4" style="font-family: 'Syncopate', sans-serif; letter-spacing: -2px;">
+                KINERA <span style="color: var(--primary);">FILMS FIXERS</span>
+            </h1>
+            <div class="animate__animated animate__fadeInUp">
+                <a href="{% url 'services' %}" class="btn btn-warning px-4 py-2 fw-bold rounded-0 text-uppercase" style="background: var(--primary); border:none;">
+                    Our Services
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+    {% block content %}
+
+    {% endblock %}
+    <footer class="bg-black py-4 text-center">
+        <p class="small text-muted mb-0 opacity-50">© 2025 KINÉRA FILM FIXERS. West African Production Hub.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar change background on scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                document.getElementById('mainNav').classList.add('scrolled');
+            } else {
+                document.getElementById('mainNav').classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

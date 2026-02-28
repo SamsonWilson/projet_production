@@ -1,0 +1,222 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block title %}{{ video.title }} - Détails{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h1 class="h3 fw-bold text-white">
+                <i class="bi bi-film"></i> {{ video.title }}
+            </h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'video_update' video.pk %}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i> Modifier
+            </a>
+            <a href="{% url 'video_list' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+
+    <!-- Aperçu vidéo -->
+    {% if video.video_file %}
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card bg-dark border-secondary">
+                <div class="card-body p-0">
+                    <video width="100%" height="400" controls>
+                        <source src="{{ video.video_file.url }}" type="video/mp4">
+                        Votre navigateur ne supporte pas la vidéo.
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% if video.thumbnail %}
+            <div class="card bg-dark border-secondary">
+                <div class="card-body p-0">
+                    <img src="{{ video.thumbnail.url }}" alt="Miniature" class="img-fluid w-100">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Informations principalesz -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0">Informations Principales</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Statut:</dt>
+                        <dd class="col-sm-8 d-flex align-items-center">
+                            {% if video.status == 'draft' %}
+                                <span class="badge bg-warning">Brouillon</span>
+                            {% else %}
+                                <span class="me-2">
+                                    {% if video.status == 'published' %}
+                                        <span class="badge bg-success">Publié</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Archivé</span>
+                                    {% endif %}
+                                </span>
+                                <!-- toggle form -->
+                                <form method="post" action="{% url 'video_toggle_status' video.pk %}">
+                                    {% csrf_token %}
+                                    {% if video.status == 'published' %}
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Archiver">
+                                            <i class="bi bi-toggle-on"></i>
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-sm btn-outline-success" title="Publier">
+                                            <i class="bi bi-toggle-off"></i>
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Mise en avant:</dt>
+                        <dd class="col-sm-8">
+                            {% if video.is_featured %}
+                                <i class="bi bi-star-fill text-warning"></i> Oui
+                            {% else %}
+                                <i class="bi bi-star text-muted"></i> Non
+                            {% endif %}
+                        </dd>
+                        <dt class="col-sm-4">Ordre:</dt>
+                        <dd class="col-sm-8">{{ video.order }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0">Métadonnées</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Durée:</dt>
+                        <dd class="col-sm-8">
+                            {% if video.duration %}
+                                {{ video.duration }} secondes
+                            {% else %}
+                                -
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Créé le:</dt>
+                        <dd class="col-sm-8">{{ video.created_at|date:"d/m/Y H:i" }}</dd>
+
+                        <dt class="col-sm-4">Modifié le:</dt>
+                        <dd class="col-sm-8">{{ video.updated_at|date:"d/m/Y H:i" }}</dd>
+
+                        <dt class="col-sm-4">Publié le:</dt>
+                        <dd class="col-sm-8">
+                            {% if video.published_at %}
+                                {{ video.published_at|date:"d/m/Y H:i" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Uploadé par:</dt>
+                        <dd class="col-sm-8">
+                            {% if video.uploaded_by %}
+                                {% if video.uploaded_by.get_full_name %}
+                                    {{ video.uploaded_by.get_full_name }}
+                                {% else %}
+                                    {{ video.uploaded_by.username }}
+                                {% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description -->
+    {% if video.description %}
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0">Description</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">{{ video.description | linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Fichiers -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0">Fichiers</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Vidéo:</dt>
+                        <dd class="col-sm-8">
+                            {% if video.video_file %}
+                                <a href="{{ video.video_file.url }}" target="_blank" class="text-primary">
+                                    {{ video.video_file.name | truncatechars:50 }}
+                                </a>
+                                <br>
+                                <small class="text-muted">{{ video.video_file.size|filesizeformat }}</small>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-4">Miniature:</dt>
+                        <dd class="col-sm-8">
+                            {% if video.thumbnail %}
+                                <a href="{{ video.thumbnail.url }}" target="_blank" class="text-primary">
+                                    {{ video.thumbnail.name | truncatechars:50 }}
+                                </a>
+                                <br>
+                                <small class="text-muted">{{ video.thumbnail.size|filesizeformat }}</small>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="row mt-4 mb-4">
+        <div class="col-md-12">
+            <a href="{% url 'video_update' video.pk %}" class="btn btn-warning btn-lg">
+                <i class="bi bi-pencil"></i> Modifier
+            </a>
+            <a href="{% url 'video_delete' video.pk %}" class="btn btn-danger btn-lg">
+                <i class="bi bi-trash"></i> Supprimer
+            </a>
+            <a href="{% url 'video_list' %}" class="btn btn-secondary btn-lg">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

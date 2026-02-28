@@ -1,0 +1,70 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3 text-white">
+                <i class="bi bi-images"></i> Portfolio
+            </h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'portfolio_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Nouveau Projet
+            </a>
+        </div>
+    </div>
+
+    {% if projects %}
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-secondary">
+
+                    <div class="card-body text-white">
+
+                        <h5>{{ project.title }}</h5>
+
+                        <p class="small text-muted">
+                            {{ project.get_project_type_display }}
+                        </p>
+
+                        {% if project.is_featured %}
+                            <span class="badge bg-warning">Mis en avant</span>
+                        {% endif %}
+
+                        <div class="mt-3">
+                            <a href="{% url 'portfolio_detail' project.pk %}" 
+                            class="btn btn-sm btn-info">Voir</a>
+
+                            <a href="{% url 'portfolio_update' project.pk %}" 
+                            class="btn btn-sm btn-warning">Modifier</a>
+
+                            <a href="{% url 'portfolio_delete' project.pk %}" 
+                            class="btn btn-sm btn-danger">Supprimer</a>
+
+                            <!-- NOUVEAU BOUTON -->
+                            <a href="{% url 'portfolio_media_add' project.pk %}" 
+                            class="btn btn-sm btn-success">
+                                <i class="bi bi-plus-circle"></i> Ajouter média
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Aucun projet trouvé.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

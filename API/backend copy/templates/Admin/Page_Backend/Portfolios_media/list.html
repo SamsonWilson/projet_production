@@ -1,0 +1,64 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+
+{% block title %}Médias Portfolio{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Liste des médias Portfolio</h1>
+    <a class="btn btn-primary" href="#">Ajouter un média</a>
+  </div>
+
+  {% if object_list %}
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Projet</th>
+            <th>Type</th>
+            <th>Aperçu</th>
+            <th>Fichier</th>
+            <th>Ordre</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for media in object_list %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ media.project.title }}</td>
+            <td>{{ media.get_media_type_display }}</td>
+            <td>
+              {% if media.thumbnail %}
+                <img src="{{ media.thumbnail.url }}" alt="thumb" style="height:60px; object-fit:cover;" />
+              {% else %}
+                {% if media.file %}
+                  <a href="{{ media.file.url }}" target="_blank">Voir</a>
+                {% else %}
+                  —
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+              {% if media.file %}
+                <a href="{{ media.file.url }}" target="_blank">{{ media.file.name|slice:":40" }}</a>
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td>{{ media.order }}</td>
+            <td>
+              <a class="btn btn-sm btn-outline-secondary" href="#">Éditer</a>
+              <a class="btn btn-sm btn-outline-danger" href="#">Supprimer</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>Aucun média trouvé.</p>
+  {% endif %}
+</div>
+{% endblock %}

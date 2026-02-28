@@ -1,0 +1,168 @@
+{% extends 'Admin/Page_Backend/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3 fw-bold text-white">
+                <i class="bi bi-film"></i> {{ title }}
+            </h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'video_list' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+
+    <!-- Affichage erreurs globales -->
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+
+    <div class="card bg-dark border-secondary">
+        <div class="card-body">
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Titre -->
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    <div class="text-danger small">{{ form.title.errors }}</div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    <div class="text-danger small">{{ form.description.errors }}</div>
+                </div>
+
+                <!-- Catégorie + Publication -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-white">{{ form.category.label }}</label>
+                        {{ form.category }}
+                        <div class="text-danger small">{{ form.category.errors }}</div>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="form-check form-switch">
+                            {{ form.is_published }}
+                            <label class="form-check-label text-white ms-2">
+                                {{ form.is_published.label }}
+                            </label>
+                        </div>
+                        <div class="text-danger small">
+                            {{ form.is_published.errors }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fichier vidéo -->
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form.video_file.label }}</label>
+                    {{ form.video_file }}
+
+                    {% if form.instance.pk and form.instance.video_file %}
+                        <div class="mt-2">
+                            <video width="250" controls>
+                                <source src="{{ form.instance.video_file.url }}">
+                            </video>
+                        </div>
+                    {% endif %}
+
+                    <div class="text-danger small">{{ form.video_file.errors }}</div>
+                </div>
+
+                <!-- Thumbnail -->
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form.thumbnail.label }}</label>
+                    {{ form.thumbnail }}
+
+                    {% if form.instance.pk and form.instance.thumbnail %}
+                        <div class="mt-2">
+                            <img src="{{ form.instance.thumbnail.url }}" width="150" class="img-thumbnail">
+                        </div>
+                    {% endif %}
+
+                    <div class="text-danger small">{{ form.thumbnail.errors }}</div>
+                </div>
+
+                <!-- Durée + Ordre -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-white">{{ form.duration.label }}</label>
+                        {{ form.duration }}
+                        <div class="text-danger small">{{ form.duration.errors }}</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-white">{{ form.order.label }}</label>
+                        {{ form.order }}
+                        <div class="text-danger small">{{ form.order.errors }}</div>
+                    </div>
+                </div>
+
+                <!-- Featured -->
+                <div class="mb-3">
+                    <div class="form-check">
+                        {{ form.is_featured }}
+                        <label class="form-check-label text-white ms-2">
+                            {{ form.is_featured.label }}
+                        </label>
+                    </div>
+                    <div class="text-danger small">{{ form.is_featured.errors }}</div>
+                </div>
+
+                <!-- URL personnalisée -->
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form.custom_url.label }}</label>
+                    {{ form.custom_url }}
+                    <div class="text-danger small">{{ form.custom_url.errors }}</div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-check-lg"></i> {{ action }}
+                    </button>
+                    <a href="{% url 'video_list' %}" class="btn btn-secondary btn-lg">
+                        <i class="bi bi-x-lg"></i> Annuler
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control, .form-select {
+    background-color: #111;
+    border-color: #444;
+    color: #fff;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #111;
+    border-color: #EE7A0D;
+    color: #fff;
+}
+
+.form-label {
+    color: #fff;
+}
+</style>
+
+{% endblock %}

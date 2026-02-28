@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio — Kinéra Film Fixers</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/clean.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top custom-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">KINÉRA FILM FIXERS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Basculer la navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/portfolio/">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="py-5">
+    <div class="container">
+      <h1 class="mb-4">Portfolio</h1>
+
+      <div class="row g-4">
+        {% for item in items %}
+        <div class="col-md-4">
+          <div class="card h-100">
+            {% if item.cover_image %}
+            <img src="{{ item.cover_image.url }}" class="card-img-top" alt="{{ item.title }}">
+            {% else %}
+            <img src="{% static 'css/image/about-thumb.jpg' %}" class="card-img-top" alt="{{ item.title }}">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ item.title }}</h5>
+              <p class="card-text flex-grow-1">{{ item.short_description|default:item.description|truncatewords:25 }}</p>
+              <a href="{% url 'portfolio_detail' slug=item.slug %}" class="btn btn-primary mt-3 align-self-start">Voir le projet</a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p>Aucun élément de portfolio pour l'instant.</p>
+        {% endfor %}
+      </div>
+
+      {% if is_paginated %}
+      <nav class="mt-4" aria-label="pagination">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>{% endif %}
+          <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+          {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>{% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
